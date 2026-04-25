@@ -1,0 +1,108 @@
+/* ────────────────────────────────────────────
+   ボタン共通: フラット色 + ニューモフィズム
+──────────────────────────────────────────── */
+.button {
+  display: inline-flex; align-items: center; justify-content: center;
+  gap: var(--sp-2);
+  border: none; border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: var(--fw-semibold);
+  transition: box-shadow var(--t-fast), transform var(--t-fast), background-color var(--t-fast);
+  white-space: nowrap;
+
+  &:disabled { opacity: 0.5; cursor: not-allowed; }
+  &:focus-visible { @include focus-ring; }
+}
+
+/* Primary: var(--c-main) ベース */
+.primary {
+  background: var(--c-main);
+  color: var(--c-white);
+  box-shadow:
+    4px 4px 10px rgba(46, 140, 155, 0.55),
+    -4px -4px 10px rgba(112, 214, 228, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+
+  &:hover:not(:disabled) {
+    box-shadow:
+      6px 6px 14px rgba(46, 140, 155, 0.6),
+      -6px -6px 14px rgba(112, 214, 228, 0.65),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  }
+  &:active:not(:disabled) {
+    box-shadow:
+      inset 4px 4px 8px rgba(46, 140, 155, 0.55),
+      inset -4px -4px 8px rgba(112, 214, 228, 0.5);
+    transform: scale(0.98);
+  }
+}
+
+/* Secondary: var(--c-accent) ベース */
+.secondary {
+  background: var(--c-accent);
+  color: var(--c-gray-800);
+  box-shadow:
+    4px 4px 10px rgba(190, 140, 50, 0.35),
+    -4px -4px 10px rgba(255, 248, 210, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+
+  &:hover:not(:disabled) {
+    box-shadow:
+      6px 6px 14px rgba(190, 140, 50, 0.4),
+      -6px -6px 14px rgba(255, 248, 210, 0.75),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  }
+  &:active:not(:disabled) {
+    box-shadow:
+      inset 4px 4px 8px rgba(190, 140, 50, 0.35),
+      inset -4px -4px 8px rgba(255, 248, 210, 0.65);
+    transform: scale(0.98);
+  }
+}
+
+/* Danger */
+.danger {
+  background: var(--c-danger);
+  color: var(--c-white);
+  box-shadow:
+    4px 4px 10px rgba(185, 28, 28, 0.38),
+    -2px -2px 8px rgba(255, 200, 200, 0.5);
+
+  &:hover:not(:disabled) {
+    box-shadow:
+      6px 6px 14px rgba(185, 28, 28, 0.45),
+      -2px -2px 8px rgba(255, 200, 200, 0.55);
+  }
+  &:active:not(:disabled) {
+    box-shadow:
+      inset 3px 3px 7px rgba(185, 28, 28, 0.45),
+      inset -2px -2px 6px rgba(255, 200, 200, 0.4);
+    transform: scale(0.98);
+  }
+}
+
+/* Ghost: 純粋ニューモフィズム (var(--c-bg) と同色) */
+.ghost {
+  background: var(--c-bg);
+  color: var(--c-gray-700);
+  border: none;
+  box-shadow: var(--shadow-neu-sm);
+
+  &:hover:not(:disabled)  { box-shadow: var(--shadow-neu); color: var(--c-main); }
+  &:active:not(:disabled) { box-shadow: var(--shadow-neu-in); color: var(--c-main); }
+}
+
+.sm { padding: var(--sp-1) var(--sp-3); font-size: var(--fs-sm); }
+.md { padding: var(--sp-2) var(--sp-4); font-size: var(--fs-base); }
+.lg { padding: var(--sp-3) var(--sp-6); font-size: var(--fs-lg); }
+.fullWidth { width: 100%; }
+
+.spinner {
+  display: inline-block;
+  width: 1em; height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }

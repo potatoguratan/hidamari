@@ -1,0 +1,55 @@
+/* ヘッダーはフラット白 */
+.header {
+  height: var(--header-height);
+  background: var(--c-white);
+  border-bottom: 2px solid var(--c-main);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--sp-6);
+  position: sticky; top: 0; z-index: 200;
+}
+
+/* ハンバーガーボタン: ニューモフィズム */
+.menuBtn {
+  display: none; flex-direction: column; gap: 5px;
+  background: var(--c-bg);
+  border: none; cursor: pointer;
+  padding: var(--sp-2); border-radius: var(--radius);
+  box-shadow: var(--shadow-neu-sm);
+  transition: box-shadow var(--t-fast);
+
+  &:hover  { box-shadow: var(--shadow-neu); }
+  &:active { box-shadow: var(--shadow-neu-in); }
+  @include mobile-and-tablet { display: flex; }
+}
+
+.menuIcon { display: block; width: 22px; height: 2px; background: var(--c-main); border-radius: 2px; }
+
+.right { display: flex; align-items: center; gap: var(--sp-4); margin-left: auto; }
+
+/* ユーザー名: フラットバッジ */
+.userName {
+  font-size: var(--fs-sm);
+  color: var(--c-main-dark);
+  font-weight: var(--fw-medium);
+  padding: var(--sp-1) var(--sp-3);
+  background: rgba(93, 193, 207, 0.12);
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(93, 193, 207, 0.28);
+}
+
+/* ログアウトボタン: ニューモフィズム */
+.logoutBtn {
+  background: var(--c-bg);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: var(--sp-1) var(--sp-4);
+  font-size: var(--fs-sm);
+  color: var(--c-gray-600);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  box-shadow: var(--shadow-neu-sm);
+  transition: box-shadow var(--t-fast), color var(--t-fast);
+
+  &:hover  { box-shadow: var(--shadow-neu); color: var(--c-gray-800); }
+  &:active { box-shadow: var(--shadow-neu-in); }
+}

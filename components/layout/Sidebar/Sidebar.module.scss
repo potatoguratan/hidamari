@@ -1,0 +1,76 @@
+/* サイドバー全体は var(--c-main) のフラット背景 */
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100dvh;
+  background: var(--c-main);
+  display: flex; flex-direction: column; flex-shrink: 0;
+  position: sticky; top: 0;
+  @include mobile-and-tablet {
+    position: fixed; top: 0; left: 0; z-index: 100;
+    transform: translateX(-100%);
+    transition: transform var(--t-normal);
+    &.open { transform: translateX(0); }
+  }
+}
+
+.overlay {
+  display: none;
+  @include mobile-and-tablet {
+    display: block; position: fixed; inset: 0;
+    background: rgba(0, 0, 0, 0.45); z-index: 99;
+  }
+}
+
+.logo {
+  padding: var(--sp-6) var(--sp-4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.logoText {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  color: var(--c-accent);
+  letter-spacing: 0.08em;
+}
+
+.nav {
+  flex: 1;
+  padding: var(--sp-4) var(--sp-3);
+  display: flex; flex-direction: column; gap: var(--sp-2);
+  overflow-y: auto;
+}
+
+/* ────────────────────────────────────────────
+   ナビ項目: var(--c-main) (#5dc1cf) 上でのニューモフィズム
+   dark shadow  : rgba(50, 148, 162, 0.65)
+   light shadow : rgba(120, 218, 232, 0.7)
+──────────────────────────────────────────── */
+.navItem {
+  display: flex; align-items: center; gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius);
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+  font-size: var(--fs-sm); font-weight: var(--fw-medium);
+  transition: box-shadow var(--t-fast), color var(--t-fast), background-color var(--t-fast);
+
+  &:hover {
+    color: var(--c-white);
+    /* 浮き上がり */
+    box-shadow:
+      4px 4px 10px rgba(46, 140, 155, 0.65),
+      -4px -4px 10px rgba(112, 214, 228, 0.68);
+  }
+
+  &.active {
+    background: var(--c-accent);
+    color: var(--c-gray-800);
+    font-weight: var(--fw-semibold);
+    /* 押し込み */
+    box-shadow:
+      inset 3px 3px 7px rgba(46, 140, 155, 0.55),
+      inset -3px -3px 7px rgba(112, 214, 228, 0.58);
+  }
+}
+
+.icon { font-size: 1.1em; flex-shrink: 0; }

@@ -1,0 +1,39 @@
+/* テーブル: フラット白カード */
+.wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--c-gray-200);
+  background: var(--c-white);
+}
+
+.table {
+  width: 100%; border-collapse: collapse; font-size: var(--fs-sm);
+
+  th {
+    padding: var(--sp-3) var(--sp-4);
+    text-align: left; font-weight: var(--fw-semibold);
+    color: var(--c-white);
+    background: var(--c-main);
+    white-space: nowrap;
+    &:first-child { border-radius: calc(var(--radius-lg) - 1px) 0 0 0; }
+    &:last-child  { border-radius: 0 calc(var(--radius-lg) - 1px) 0 0; }
+  }
+
+  td {
+    padding: var(--sp-3) var(--sp-4);
+    color: var(--c-gray-800);
+    border-bottom: 1px solid var(--c-gray-100);
+    vertical-align: middle;
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+}
+
+/* クリック可能行: ニューモフィズムでなく軽い bg 変化 (行は面積が広すぎてニューモ不向き) */
+.clickable {
+  cursor: pointer;
+  transition: background-color var(--t-fast);
+  &:hover td { background: rgba(93, 193, 207, 0.06); }
+}
+
+.empty { text-align: center; color: var(--c-gray-400); padding: var(--sp-8) var(--sp-4) !important; }

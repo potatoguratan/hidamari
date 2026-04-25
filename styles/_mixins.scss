@@ -1,0 +1,92 @@
+// ============================================================
+// レスポンシブ mixin
+// NOTE: _variables.scss と _breakpoints.scss は additionalData で注入済み
+// ============================================================
+
+@mixin mobile {
+  @media (max-width: #{$bp-mobile-max}) {
+    @content;
+  }
+}
+
+@mixin tablet-portrait {
+  @media (min-width: #{$bp-tablet-portrait-min}) and (max-width: #{$bp-tablet-portrait-max}) {
+    @content;
+  }
+}
+
+@mixin tablet-landscape {
+  @media (min-width: #{$bp-tablet-landscape-min}) and (max-width: #{$bp-tablet-landscape-max}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: #{$bp-tablet-portrait-min}) and (max-width: #{$bp-tablet-landscape-max}) {
+    @content;
+  }
+}
+
+@mixin tablet-and-up {
+  @media (min-width: #{$bp-tablet-portrait-min}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$bp-desktop-min}) {
+    @content;
+  }
+}
+
+@mixin mobile-and-tablet {
+  @media (max-width: #{$bp-tablet-landscape-max}) {
+    @content;
+  }
+}
+
+// ============================================================
+// ユーティリティ mixin
+// ============================================================
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+@mixin focus-ring {
+  outline: 2px solid $color-main;
+  outline-offset: 2px;
+}
+
+@mixin card {
+  background: $color-white;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow;
+  padding: $space-6;
+}

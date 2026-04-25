@@ -1,0 +1,5 @@
+.main {
+  flex: 1; padding: var(--sp-6); overflow-y: auto;
+  background: var(--c-bg); max-width: var(--content-max-w); width: 100%;
+  @include mobile { padding: var(--sp-4); }
+}

@@ -1,0 +1,8 @@
+.alert { border-left: 4px solid; border-radius: var(--radius); padding: var(--sp-3) var(--sp-4); }
+.title { font-weight: var(--fw-semibold); margin-bottom: var(--sp-1); font-size: var(--fs-sm); }
+.body  { font-size: var(--fs-sm); }
+
+.info    { background: rgba(93, 193, 207, 0.12); border-color: var(--c-main);    color: var(--c-main-dark); }
+.success { background: #dcfce7;                  border-color: var(--c-success); color: #15803d; }
+.warning { background: rgba(255, 222, 170, 0.4); border-color: var(--c-accent-dark); color: var(--c-brown-dark); }
+.danger  { background: #fee2e2;                  border-color: var(--c-danger);  color: #b91c1c; }

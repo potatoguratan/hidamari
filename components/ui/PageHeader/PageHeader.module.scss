@@ -1,0 +1,19 @@
+.header { @include flex-between; margin-bottom: var(--sp-6); gap: var(--sp-4); flex-wrap: wrap; }
+
+.text {}
+
+.title {
+  font-size: var(--fs-2xl); font-weight: var(--fw-bold); color: var(--c-gray-900);
+
+  &::after {
+    content: '';
+    display: block; width: 48px; height: 3px;
+    background: var(--c-main);
+    border-radius: var(--radius-pill);
+    margin-top: var(--sp-1);
+  }
+}
+
+.description { font-size: var(--fs-sm); color: var(--c-gray-500); margin-top: var(--sp-2); }
+
+.actions { display: flex; gap: var(--sp-2); flex-shrink: 0; }
