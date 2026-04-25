@@ -3,15 +3,20 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useUiStore } from "@/store"
+import { FaRegCalendarAlt, FaRegAddressBook, FaRegChartBar } from "react-icons/fa"
+import { PiBookOpenText } from "react-icons/pi"
+import { MdOutlineInventory } from "react-icons/md"
+import { AiOutlinePayCircle } from "react-icons/ai"
+import type { IconType } from "react-icons"
 import styles from "./Sidebar.module.scss"
 
-const NAV_ITEMS = [
-  { href: "/reservations", label: "予約管理",   icon: "📅" },
-  { href: "/customers",    label: "顧客管理",   icon: "👤" },
-  { href: "/sales",        label: "売上管理",   icon: "📊" },
-  { href: "/menu",         label: "メニュー管理", icon: "✂️" },
-  { href: "/inventory",    label: "在庫管理",   icon: "📦" },
-  { href: "/checkout",     label: "会計",       icon: "💴" },
+const NAV_ITEMS: { href: string; label: string; Icon: IconType }[] = [
+  { href: "/reservations", label: "予約管理",    Icon: FaRegCalendarAlt },
+  { href: "/customers",    label: "顧客管理",    Icon: FaRegAddressBook },
+  { href: "/sales",        label: "売上管理",    Icon: FaRegChartBar },
+  { href: "/menu",         label: "メニュー管理", Icon: PiBookOpenText },
+  { href: "/inventory",    label: "在庫管理",    Icon: MdOutlineInventory },
+  { href: "/checkout",     label: "会計",        Icon: AiOutlinePayCircle },
 ]
 
 export default function Sidebar() {
@@ -41,7 +46,7 @@ export default function Sidebar() {
                 className={[styles.navItem, active ? styles.active : ""].filter(Boolean).join(" ")}
                 onClick={() => setSidebarOpen(false)}
               >
-                <span className={styles.icon} aria-hidden>{item.icon}</span>
+                <item.Icon className={styles.icon} aria-hidden />
                 <span>{item.label}</span>
               </Link>
             )
