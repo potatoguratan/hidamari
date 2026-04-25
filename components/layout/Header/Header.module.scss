@@ -14,10 +14,9 @@
   background: var(--c-bg);
   border: none; cursor: pointer;
   padding: var(--sp-2); border-radius: var(--radius);
-  box-shadow: var(--shadow-neu-sm);
+  box-shadow: var(--shadow-neu);
   transition: box-shadow var(--t-fast);
 
-  &:hover  { box-shadow: var(--shadow-neu); }
   &:active { box-shadow: var(--shadow-neu-in); }
   @include mobile-and-tablet { display: flex; }
 }
@@ -47,9 +46,8 @@
   color: var(--c-gray-600);
   font-weight: var(--fw-medium);
   cursor: pointer;
-  box-shadow: var(--shadow-neu-sm);
-  transition: box-shadow var(--t-fast), color var(--t-fast);
+  box-shadow: var(--shadow-neu);
+  transition: box-shadow var(--t-fast);
 
-  &:hover  { box-shadow: var(--shadow-neu); color: var(--c-gray-800); }
   &:active { box-shadow: var(--shadow-neu-in); }
 }

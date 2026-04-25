@@ -11,7 +11,7 @@ export default function ReservationsPage() {
       <PageHeader
         title="予約管理"
         description="月別カレンダーで予約を管理"
-        actions={<Button>予約追加</Button>}
+        actions={<Button variant="ghost">予約追加</Button>}
       />
       <Suspense fallback={<p>読み込み中...</p>}>
         <ReservationCalendar />

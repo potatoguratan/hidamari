@@ -11,7 +11,7 @@ export default function CustomersPage() {
       <PageHeader
         title="顧客管理"
         description="顧客カルテの閲覧・管理"
-        actions={<Button>新規顧客登録</Button>}
+        actions={<Button variant="ghost">新規顧客登録</Button>}
       />
       <Suspense fallback={<p>読み込み中...</p>}>
         <CustomerList />

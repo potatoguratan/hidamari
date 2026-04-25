@@ -11,7 +11,7 @@ export default function MenuPage() {
       <PageHeader
         title="メニュー管理"
         description="施術メニューの価格・時間を管理"
-        actions={<Button>メニュー追加</Button>}
+        actions={<Button variant="ghost">メニュー追加</Button>}
       />
       <Suspense fallback={<p>読み込み中...</p>}>
         <MenuList />

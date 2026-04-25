@@ -33,9 +33,8 @@
   border: none; cursor: pointer;
   color: var(--c-gray-600); font-size: var(--fs-lg); line-height: 1;
   padding: var(--sp-1) var(--sp-2); border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-neu-sm);
-  transition: box-shadow var(--t-fast), color var(--t-fast);
+  box-shadow: var(--shadow-neu);
+  transition: box-shadow var(--t-fast);
 
-  &:hover  { box-shadow: var(--shadow-neu); color: var(--c-gray-800); }
   &:active { box-shadow: var(--shadow-neu-in); }
 }

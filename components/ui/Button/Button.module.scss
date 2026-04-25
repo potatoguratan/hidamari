@@ -22,13 +22,8 @@
     4px 4px 10px rgba(46, 140, 155, 0.55),
     -4px -4px 10px rgba(112, 214, 228, 0.6),
     inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  transition: box-shadow var(--t-fast), transform var(--t-fast);
 
-  &:hover:not(:disabled) {
-    box-shadow:
-      6px 6px 14px rgba(46, 140, 155, 0.6),
-      -6px -6px 14px rgba(112, 214, 228, 0.65),
-      inset 0 1px 0 rgba(255, 255, 255, 0.22);
-  }
   &:active:not(:disabled) {
     box-shadow:
       inset 4px 4px 8px rgba(46, 140, 155, 0.55),
@@ -45,13 +40,8 @@
     4px 4px 10px rgba(190, 140, 50, 0.35),
     -4px -4px 10px rgba(255, 248, 210, 0.7),
     inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  transition: box-shadow var(--t-fast), transform var(--t-fast);
 
-  &:hover:not(:disabled) {
-    box-shadow:
-      6px 6px 14px rgba(190, 140, 50, 0.4),
-      -6px -6px 14px rgba(255, 248, 210, 0.75),
-      inset 0 1px 0 rgba(255, 255, 255, 0.35);
-  }
   &:active:not(:disabled) {
     box-shadow:
       inset 4px 4px 8px rgba(190, 140, 50, 0.35),
@@ -67,12 +57,8 @@
   box-shadow:
     4px 4px 10px rgba(185, 28, 28, 0.38),
     -2px -2px 8px rgba(255, 200, 200, 0.5);
+  transition: box-shadow var(--t-fast), transform var(--t-fast);
 
-  &:hover:not(:disabled) {
-    box-shadow:
-      6px 6px 14px rgba(185, 28, 28, 0.45),
-      -2px -2px 8px rgba(255, 200, 200, 0.55);
-  }
   &:active:not(:disabled) {
     box-shadow:
       inset 3px 3px 7px rgba(185, 28, 28, 0.45),
@@ -81,15 +67,16 @@
   }
 }
 
-/* Ghost: 純粋ニューモフィズム (var(--c-bg) と同色) */
+/* Ghost: 純粋ニューモフィズム (var(--c-bg) と同色・色変化なし) */
 .ghost {
   background: var(--c-bg);
   color: var(--c-gray-700);
   border: none;
-  box-shadow: var(--shadow-neu-sm);
+  /* 通常時から浮き上がり状態 */
+  box-shadow: var(--shadow-neu);
+  transition: box-shadow var(--t-fast);
 
-  &:hover:not(:disabled)  { box-shadow: var(--shadow-neu); color: var(--c-main); }
-  &:active:not(:disabled) { box-shadow: var(--shadow-neu-in); color: var(--c-main); }
+  &:active:not(:disabled) { box-shadow: var(--shadow-neu-in); }
 }
 
 .sm { padding: var(--sp-1) var(--sp-3); font-size: var(--fs-sm); }

@@ -49,22 +49,12 @@
   display: flex; align-items: center; gap: var(--sp-3);
   padding: var(--sp-3) var(--sp-4);
   border-radius: var(--radius);
-  color: rgba(255, 255, 255, 0.85);
+  color: var(--c-white);
   text-decoration: none;
   font-size: var(--fs-sm); font-weight: var(--fw-medium);
-  transition: box-shadow var(--t-fast), color var(--t-fast), background-color var(--t-fast);
-
-  &:hover {
-    color: var(--c-white);
-    /* 浮き上がり */
-    box-shadow:
-      4px 4px 10px rgba(46, 140, 155, 0.65),
-      -4px -4px 10px rgba(112, 214, 228, 0.68);
-  }
+  transition: box-shadow var(--t-fast);
 
   &.active {
-    background: var(--c-accent);
-    color: var(--c-gray-800);
     font-weight: var(--fw-semibold);
     /* 押し込み */
     box-shadow:

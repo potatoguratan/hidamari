@@ -11,7 +11,7 @@ export default function InventoryPage() {
       <PageHeader
         title="在庫管理"
         description="カラー材・薬剤の在庫を管理"
-        actions={<Button>アイテム追加</Button>}
+        actions={<Button variant="ghost">アイテム追加</Button>}
       />
       <Suspense fallback={<p>読み込み中...</p>}>
         <InventoryList />
