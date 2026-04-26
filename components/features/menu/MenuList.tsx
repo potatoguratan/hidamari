@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect } from "react"
 import Button from "@/components/ui/Button"
 import Modal from "@/components/ui/Modal"
 import Input from "@/components/ui/Input"
@@ -12,16 +12,13 @@ import styles from "./MenuList.module.scss"
 const EMPTY_FORM: MenuItemFormData = { name: "", price: 0, durationMin: 0, isActive: true }
 
 // ─── 追加モーダル ────────────────────────────────────────────────────────
+// 条件付きレンダリング前提（{addOpen && <AddModal>}）のため open prop 不要
 function AddModal({
-  open, onClose, onSaved,
-}: { open: boolean; onClose: () => void; onSaved: () => void }) {
+  onClose, onSaved,
+}: { onClose: () => void; onSaved: () => void }) {
   const [form, setForm] = useState<MenuItemFormData>(EMPTY_FORM)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState("")
-
-  useEffect(() => {
-    if (open) { setForm(EMPTY_FORM); setError("") }
-  }, [open])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -37,7 +34,7 @@ function AddModal({
   }
 
   return (
-    <Modal open={open} onClose={onClose} title="メニュー追加" size="sm">
+    <Modal open onClose={onClose} title="メニュー追加" size="sm">
       <form onSubmit={handleSubmit} className={styles.form}>
         <Input
           label="メニュー名"
@@ -84,20 +81,16 @@ function AddModal({
 }
 
 // ─── 編集モーダル ────────────────────────────────────────────────────────
+// 条件付きレンダリング前提のためマウント時に useState 初期値が確定する
 function EditModal({
-  open, onClose, onSaved, item,
-}: { open: boolean; onClose: () => void; onSaved: () => void; item: MenuItem }) {
+  onClose, onSaved, item,
+}: { onClose: () => void; onSaved: () => void; item: MenuItem }) {
   const [form, setForm] = useState<MenuItemFormData>({
     name: item.name, price: item.price,
     durationMin: item.durationMin, isActive: item.isActive,
   })
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState("")
-
-  useEffect(() => {
-    setForm({ name: item.name, price: item.price, durationMin: item.durationMin, isActive: item.isActive })
-    setError("")
-  }, [item])
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -113,7 +106,7 @@ function EditModal({
   }
 
   return (
-    <Modal open={open} onClose={onClose} title="メニュー編集" size="sm">
+    <Modal open onClose={onClose} title="メニュー編集" size="sm">
       <form onSubmit={handleSubmit} className={styles.form}>
         <Input
           label="メニュー名"
@@ -158,8 +151,8 @@ function EditModal({
 
 // ─── 削除確認モーダル ────────────────────────────────────────────────────
 function DeleteModal({
-  open, onClose, onDeleted, item,
-}: { open: boolean; onClose: () => void; onDeleted: () => void; item: MenuItem }) {
+  onClose, onDeleted, item,
+}: { onClose: () => void; onDeleted: () => void; item: MenuItem }) {
   const [deleting, setDeleting] = useState(false)
   const [error, setError] = useState("")
 
@@ -172,7 +165,7 @@ function DeleteModal({
   }
 
   return (
-    <Modal open={open} onClose={onClose} title="メニューの削除" size="sm">
+    <Modal open onClose={onClose} title="メニューの削除" size="sm">
       <div className={styles.deleteContent}>
         <dl className={styles.dl}>
           <div className={styles.dlRow}><dt>メニュー名</dt><dd>{item.name}</dd></div>
@@ -207,27 +200,31 @@ export function MenuList() {
   const [items, setItems] = useState<MenuItem[]>([])
   const [loading, setLoading] = useState(true)
   const [fetchError, setFetchError] = useState("")
+  const [refreshKey, setRefreshKey] = useState(0)
   const [addOpen, setAddOpen] = useState(false)
   const [editTarget, setEditTarget] = useState<MenuItem | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<MenuItem | null>(null)
 
-  const fetchItems = useCallback(async () => {
-    try {
-      const res = await fetch("/api/menu")
-      if (!res.ok) {
-        setFetchError(`データ取得に失敗しました (${res.status})`)
-        return
-      }
-      setItems(await res.json())
-      setFetchError("")
-    } catch {
-      setFetchError("サーバーに接続できません")
-    } finally {
-      setLoading(false)
-    }
-  }, [])
+  const refresh = () => setRefreshKey(k => k + 1)
 
-  useEffect(() => { fetchItems() }, [fetchItems])
+  useEffect(() => {
+    async function load() {
+      try {
+        const res = await fetch("/api/menu")
+        if (!res.ok) {
+          setFetchError(`データ取得に失敗しました (${res.status})`)
+          return
+        }
+        setItems(await res.json())
+        setFetchError("")
+      } catch {
+        setFetchError("サーバーに接続できません")
+      } finally {
+        setLoading(false)
+      }
+    }
+    load()
+  }, [refreshKey])
 
   const columns = [
     { key: "name", label: "メニュー名" },
@@ -271,7 +268,7 @@ export function MenuList() {
   return (
     <>
       <div className={styles.toolbar}>
-        <Button onClick={() => setAddOpen(true)}>メニュー追加</Button>
+        <Button variant="ghost" onClick={() => setAddOpen(true)}>メニュー追加</Button>
       </div>
 
       {loading ? (
@@ -282,24 +279,23 @@ export function MenuList() {
         <Table columns={columns} data={items} emptyMessage="メニューがありません" />
       )}
 
-      <AddModal
-        open={addOpen}
-        onClose={() => setAddOpen(false)}
-        onSaved={fetchItems}
-      />
+      {addOpen && (
+        <AddModal
+          onClose={() => setAddOpen(false)}
+          onSaved={refresh}
+        />
+      )}
       {editTarget && (
         <EditModal
-          open
           onClose={() => setEditTarget(null)}
-          onSaved={fetchItems}
+          onSaved={refresh}
           item={editTarget}
         />
       )}
       {deleteTarget && (
         <DeleteModal
-          open
           onClose={() => setDeleteTarget(null)}
-          onDeleted={fetchItems}
+          onDeleted={refresh}
           item={deleteTarget}
         />
       )}
