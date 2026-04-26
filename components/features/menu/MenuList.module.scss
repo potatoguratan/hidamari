@@ -64,6 +64,18 @@
   justify-content: flex-end;
 }
 
+/* 3点リーダーボタン: 正方形 */
+.dotBtn {
+  width: 32px;
+  height: 32px;
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius) !important;
+  font-size: 1rem;
+}
+
 /* ドラッグハンドル */
 .dragHandle {
   display: flex;
@@ -116,6 +128,21 @@
   gap: var(--sp-3);
   padding-top: var(--sp-2);
   border-top: 1px solid var(--c-gray-100);
+}
+
+/* 削除ボタンを左、キャンセル・更新を右に分けるフッター */
+.formActionsSpread {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--c-gray-100);
+}
+
+.formActionsRight {
+  display: flex;
+  gap: var(--sp-3);
 }
 
 .error {
