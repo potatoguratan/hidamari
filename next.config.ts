@@ -109,6 +109,7 @@ const scssMixins = `
 `
 
 const nextConfig: NextConfig = {
+  serverExternalPackages: ["@prisma/adapter-libsql", "@libsql/client"],
   sassOptions: {
     additionalData: scssMixins,
   },

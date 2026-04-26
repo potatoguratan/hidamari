@@ -1,5 +1,4 @@
-import { Pool } from "pg"
-import { PrismaPg } from "@prisma/adapter-pg"
+import { PrismaLibSql } from "@prisma/adapter-libsql"
 import { PrismaClient } from "@/app/generated/prisma/client"
 
 const globalForPrisma = globalThis as unknown as {
@@ -7,8 +6,10 @@ const globalForPrisma = globalThis as unknown as {
 }
 
 function createPrismaClient() {
-  const pool = new Pool({ connectionString: process.env.DATABASE_URL })
-  const adapter = new PrismaPg(pool)
+  // DATABASE_URL は .env.local が優先される（Next.js の仕様）
+  // 例: file:./prisma/dev.db（開発）/ postgresql://...（本番 Supabase）
+  const url = process.env.DATABASE_URL!
+  const adapter = new PrismaLibSql({ url })
   return new PrismaClient({ adapter })
 }
 

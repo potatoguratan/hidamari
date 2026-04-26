@@ -17,6 +17,7 @@
 .lg { width: min(800px, 95vw); }
 
 .inner { padding: var(--sp-6); }
+.body  {}
 
 .header {
   @include flex-between;

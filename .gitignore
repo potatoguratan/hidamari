@@ -43,6 +43,12 @@ next-env.d.ts
 # prisma generated client
 /app/generated/
 
+# SQLite ローカル開発 DB
+prisma/dev.db
+prisma/dev.db-journal
+prisma/dev.db-shm
+prisma/dev.db-wal
+
 # local env
 .env.local
 

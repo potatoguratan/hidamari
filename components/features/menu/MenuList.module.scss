@@ -1,0 +1,104 @@
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--sp-4);
+}
+
+.loadingText {
+  color: var(--c-gray-400);
+  font-size: var(--fs-sm);
+  padding: var(--sp-4);
+}
+
+.fetchError {
+  font-size: var(--fs-sm);
+  color: var(--c-danger);
+  padding: var(--sp-4);
+}
+
+/* テーブル行の操作ボタン群 */
+.rowActions {
+  display: flex;
+  gap: var(--sp-2);
+  justify-content: flex-end;
+}
+
+/* モーダル内フォーム */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.checkLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--c-gray-700);
+  cursor: pointer;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--c-main);
+  cursor: pointer;
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-3);
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--c-gray-100);
+}
+
+.error {
+  font-size: var(--fs-sm);
+  color: var(--c-danger);
+}
+
+/* 削除確認モーダル */
+.deleteContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.dl {
+  background: var(--c-bg);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  box-shadow: var(--shadow-neu-in);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.dlRow {
+  display: flex;
+  gap: var(--sp-4);
+  font-size: var(--fs-sm);
+
+  dt {
+    color: var(--c-gray-500);
+    width: 80px;
+    flex-shrink: 0;
+  }
+
+  dd {
+    color: var(--c-gray-900);
+    font-weight: var(--fw-medium);
+  }
+}
+
+.deleteWarning {
+  font-size: var(--fs-sm);
+  color: var(--c-gray-600);
+  padding: var(--sp-3) var(--sp-4);
+  border-left: 3px solid var(--c-danger);
+  background: rgba(239, 68, 68, 0.05);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}

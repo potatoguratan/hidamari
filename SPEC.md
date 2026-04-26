@@ -341,6 +341,10 @@ DIRECT_URL="postgresql://..."    # Supabase の Direct URL (Prisma 用)
 DB_PROVIDER="supabase"
 ```
 
+  今後の Vercel + Supabase デプロイ時は以下を変更するだけです：
+  - prisma/schema.prisma → provider = "postgresql"
+  - lib/db/prisma.ts → PrismaPg アダプターに戻す
+  - Vercel の環境変数に DATABASE_URL（Supabase 接続文字列）を設定
 ---
 
 ## レスポンシブブレークポイント
