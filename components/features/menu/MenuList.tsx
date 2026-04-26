@@ -1,11 +1,22 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import {
+  DndContext, closestCenter,
+  PointerSensor, TouchSensor,
+  useSensor, useSensors,
+  type DragEndEvent,
+} from "@dnd-kit/core"
+import {
+  SortableContext, verticalListSortingStrategy,
+  useSortable, arrayMove,
+} from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
+import { MdDragIndicator } from "react-icons/md"
 import Button from "@/components/ui/Button"
 import Modal from "@/components/ui/Modal"
 import Input from "@/components/ui/Input"
 import Badge from "@/components/ui/Badge"
-import Table from "@/components/ui/Table"
 import type { MenuItem, MenuItemFormData } from "@/types/menu"
 import styles from "./MenuList.module.scss"
 
@@ -195,6 +206,48 @@ function DeleteModal({
   )
 }
 
+// ─── ドラッグ可能な行 ────────────────────────────────────────────────────
+function SortableRow({
+  item, onEdit, onDelete,
+}: {
+  item: MenuItem
+  onEdit: (item: MenuItem) => void
+  onDelete: (item: MenuItem) => void
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
+    useSortable({ id: item.id })
+
+  return (
+    <tr
+      ref={setNodeRef}
+      style={{ transform: CSS.Transform.toString(transform), transition }}
+      className={isDragging ? styles.dragging : undefined}
+    >
+      <td style={{ width: "44px" }}>
+        <span className={styles.dragHandle} {...attributes} {...listeners}>
+          <MdDragIndicator />
+        </span>
+      </td>
+      <td>{item.name}</td>
+      <td>¥{item.price.toLocaleString()}</td>
+      <td>{item.durationMin}分</td>
+      <td>
+        <Badge variant={item.isActive ? "success" : "default"}>
+          {item.isActive ? "有効" : "無効"}
+        </Badge>
+      </td>
+      <td>
+        <div className={styles.rowActions}>
+          <Button size="sm" variant="ghost"
+            onClick={e => { e.stopPropagation(); onEdit(item) }}>編集</Button>
+          <Button size="sm" variant="ghost"
+            onClick={e => { e.stopPropagation(); onDelete(item) }}>削除</Button>
+        </div>
+      </td>
+    </tr>
+  )
+}
+
 // ─── メインコンポーネント ────────────────────────────────────────────────
 export function MenuList() {
   const [items, setItems] = useState<MenuItem[]>([])
@@ -206,6 +259,27 @@ export function MenuList() {
   const [deleteTarget, setDeleteTarget] = useState<MenuItem | null>(null)
 
   const refresh = () => setRefreshKey(k => k + 1)
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(TouchSensor, { activationConstraint: { delay: 200, tolerance: 8 } }),
+  )
+
+  function handleDragEnd(event: DragEndEvent) {
+    const { active, over } = event
+    if (!over || active.id === over.id) return
+    setItems(prev => {
+      const oldIndex = prev.findIndex(i => i.id === active.id)
+      const newIndex = prev.findIndex(i => i.id === over.id)
+      const next = arrayMove(prev, oldIndex, newIndex)
+      fetch("/api/menu/reorder", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: next.map((item, idx) => ({ id: item.id, sortOrder: idx })) }),
+      }).catch(console.error)
+      return next
+    })
+  }
 
   useEffect(() => {
     async function load() {
@@ -226,45 +300,6 @@ export function MenuList() {
     load()
   }, [refreshKey])
 
-  const columns = [
-    { key: "name", label: "メニュー名" },
-    {
-      key: "price", label: "価格", width: "110px",
-      render: (row: MenuItem) => `¥${row.price.toLocaleString()}`,
-    },
-    {
-      key: "durationMin", label: "所要時間", width: "100px",
-      render: (row: MenuItem) => `${row.durationMin}分`,
-    },
-    {
-      key: "isActive", label: "状態", width: "80px",
-      render: (row: MenuItem) => (
-        <Badge variant={row.isActive ? "success" : "default"}>
-          {row.isActive ? "有効" : "無効"}
-        </Badge>
-      ),
-    },
-    {
-      key: "actions", label: "", width: "128px",
-      render: (row: MenuItem) => (
-        <div className={styles.rowActions}>
-          <Button
-            size="sm" variant="ghost"
-            onClick={e => { e.stopPropagation(); setEditTarget(row) }}
-          >
-            編集
-          </Button>
-          <Button
-            size="sm" variant="ghost"
-            onClick={e => { e.stopPropagation(); setDeleteTarget(row) }}
-          >
-            削除
-          </Button>
-        </div>
-      ),
-    },
-  ]
-
   return (
     <>
       <div className={styles.toolbar}>
@@ -276,7 +311,38 @@ export function MenuList() {
       ) : fetchError ? (
         <p className={styles.fetchError}>{fetchError}</p>
       ) : (
-        <Table columns={columns} data={items} emptyMessage="メニューがありません" />
+        <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+          <div className={styles.dndWrapper}>
+            <table className={styles.dndTable}>
+              <thead>
+                <tr>
+                  <th style={{ width: "44px" }} />
+                  <th>メニュー名</th>
+                  <th style={{ width: "110px" }}>価格</th>
+                  <th style={{ width: "100px" }}>所要時間</th>
+                  <th style={{ width: "80px" }}>状態</th>
+                  <th style={{ width: "128px" }} />
+                </tr>
+              </thead>
+              <tbody>
+                <SortableContext items={items.map(i => i.id)} strategy={verticalListSortingStrategy}>
+                  {items.length === 0 ? (
+                    <tr><td colSpan={6} className={styles.emptyCell}>メニューがありません</td></tr>
+                  ) : (
+                    items.map(item => (
+                      <SortableRow
+                        key={item.id}
+                        item={item}
+                        onEdit={setEditTarget}
+                        onDelete={setDeleteTarget}
+                      />
+                    ))
+                  )}
+                </SortableContext>
+              </tbody>
+            </table>
+          </div>
+        </DndContext>
       )}
 
       {addOpen && (

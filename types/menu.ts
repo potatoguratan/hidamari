@@ -4,6 +4,7 @@ export type MenuItem = {
   price: number
   durationMin: number
   isActive: boolean
+  sortOrder: number
   createdAt: string
   updatedAt: string
 }

@@ -8,7 +8,7 @@ export async function GET() {
 
   try {
     const items = await prisma.menuItem.findMany({
-      orderBy: [{ isActive: "desc" }, { name: "asc" }],
+      orderBy: { sortOrder: "asc" },
     })
     return NextResponse.json(items)
   } catch (e) {
