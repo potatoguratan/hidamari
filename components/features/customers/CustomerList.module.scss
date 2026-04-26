@@ -1,0 +1,153 @@
+.toolbar {
+  display: flex;
+  align-items: center;
+  margin-bottom: var(--sp-4);
+}
+
+.searchWrap {
+  flex: 1;
+  max-width: 360px;
+}
+
+.loadingText {
+  color: var(--c-gray-400);
+  font-size: var(--fs-sm);
+  padding: var(--sp-4);
+}
+
+.fetchError {
+  font-size: var(--fs-sm);
+  color: var(--c-danger);
+  padding: var(--sp-4);
+}
+
+/* 矢印リンク（ghost ボタンと同じニューモフィズム・正方形） */
+.arrowLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius);
+  background: var(--c-bg);
+  color: var(--c-main);
+  font-size: 1.1rem;
+  box-shadow: var(--shadow-neu);
+  transition: box-shadow var(--t-fast);
+  text-decoration: none;
+
+  &:active { box-shadow: var(--shadow-neu-in); }
+}
+
+/* 3点リーダーボタン */
+.dotBtn {
+  width: 32px;
+  height: 32px;
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius) !important;
+  font-size: 1rem;
+}
+
+/* モーダル内フォーム */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.textarea {
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  border: none;
+  border-radius: var(--radius);
+  font-size: var(--fs-base);
+  color: var(--c-gray-900);
+  background: var(--c-bg);
+  box-shadow:
+    inset 3px 3px 7px rgba(163, 177, 198, 0.42),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.88);
+  resize: vertical;
+  min-height: 72px;
+  transition: outline-color 150ms ease;
+  font-family: inherit;
+  outline: 2px solid transparent;
+
+  &:focus {
+    outline: 2px solid var(--c-main);
+    outline-offset: 0;
+  }
+}
+
+.fieldLabel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--c-gray-700);
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-3);
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--c-gray-100);
+}
+
+.formActionsSpread {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--c-gray-100);
+}
+
+.formActionsRight {
+  display: flex;
+  gap: var(--sp-3);
+}
+
+.error {
+  font-size: var(--fs-sm);
+  color: var(--c-danger);
+}
+
+/* 削除確認 */
+.deleteContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.dl {
+  background: var(--c-bg);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  box-shadow: var(--shadow-neu-in);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.dlRow {
+  display: flex;
+  gap: var(--sp-4);
+  font-size: var(--fs-sm);
+
+  dt { color: var(--c-gray-500); width: 90px; flex-shrink: 0; }
+  dd { color: var(--c-gray-900); font-weight: var(--fw-medium); }
+}
+
+.deleteWarning {
+  font-size: var(--fs-sm);
+  color: var(--c-gray-600);
+  padding: var(--sp-3) var(--sp-4);
+  border-left: 3px solid var(--c-danger);
+  background: rgba(239, 68, 68, 0.05);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}

@@ -17,7 +17,6 @@ export type CustomerFormData = {
   name: string
   nameKana: string
   phone?: string
-  email?: string
   birthday?: string
   allergies?: string
   notes?: string

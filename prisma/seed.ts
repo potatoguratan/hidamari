@@ -18,6 +18,28 @@ const STAFF_SEED = [
   },
 ]
 
+// ── Customer ─────────────────────────────────────────────────────────────
+const CUSTOMERS = [
+  { name: "田中 花子",   nameKana: "たなか はなこ",   phone: "090-1234-5678", email: "hanako@example.com",  birthday: new Date("1988-03-15"), allergies: null,               notes: "ロングヘア、毎月来店" },
+  { name: "佐藤 美咲",   nameKana: "さとう みさき",   phone: "080-9876-5432", email: null,                  birthday: new Date("1995-07-22"), allergies: "パーマ液アレルギー", notes: null },
+  { name: "鈴木 由美",   nameKana: "すずき ゆみ",     phone: "070-1111-2222", email: "yumi@example.com",    birthday: new Date("1979-11-08"), allergies: null,               notes: null },
+  { name: "山田 彩花",   nameKana: "やまだ あやか",   phone: "090-3333-4444", email: null,                  birthday: new Date("2001-05-30"), allergies: null,               notes: "前回カラー：ベージュ" },
+  { name: "伊藤 明日香", nameKana: "いとう あすか",   phone: "080-5555-6666", email: "asuka@example.com",   birthday: new Date("1992-01-18"), allergies: null,               notes: null },
+  { name: "渡辺 千春",   nameKana: "わたなべ ちはる", phone: null,             email: "chiharu@example.com", birthday: new Date("1985-09-03"), allergies: "金属アレルギー",   notes: "カラーは植物性のみ希望" },
+  { name: "中村 優子",   nameKana: "なかむら ゆうこ", phone: "090-7777-8888", email: null,                  birthday: new Date("1998-12-25"), allergies: null,               notes: null },
+  { name: "小林 真理子", nameKana: "こばやし まりこ", phone: "070-2222-3333", email: "mariko@example.com",  birthday: new Date("1975-06-14"), allergies: null,               notes: "敏感肌" },
+]
+
+async function seedCustomers() {
+  const existing = await prisma.customer.count()
+  if (existing > 0) {
+    console.log(`Skipped customers: ${existing} records already exist.`)
+    return
+  }
+  const result = await prisma.customer.createMany({ data: CUSTOMERS })
+  console.log(`Seeded ${result.count} customers.`)
+}
+
 // ── MenuItem ─────────────────────────────────────────────────────────────
 const MENU_ITEMS = [
   { name: "カット",         price: 4000, durationMin: 60,  sortOrder: 0  },
@@ -71,6 +93,7 @@ async function seedMenu() {
 async function main() {
   await seedStaff()
   await seedMenu()
+  await seedCustomers()
 }
 
 main()
