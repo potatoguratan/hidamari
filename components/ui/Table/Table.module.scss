@@ -1,13 +1,15 @@
-/* テーブル: フラット白カード */
+/* テーブル: ニューモフィズム（右下シャドウのみ） */
 .wrapper {
   overflow-x: auto;
   border-radius: var(--radius-lg);
-  border: 1px solid var(--c-gray-200);
-  background: var(--c-white);
+  background: var(--c-bg);
+  /* 左上ハイライトを除いた右下シャドウのみ */
+  box-shadow: 6px 6px 14px rgba(163, 177, 198, 0.6);
+  border: none;
 }
 
 .table {
-  width: 100%; border-collapse: collapse; font-size: var(--fs-sm);
+  width: 100%; border-collapse: collapse; font-size: var(--fs-sm); background: transparent;
 
   th {
     padding: var(--sp-3) var(--sp-4);
@@ -22,18 +24,31 @@
   td {
     padding: var(--sp-3) var(--sp-4);
     color: var(--c-gray-800);
-    border-bottom: 1px solid var(--c-gray-100);
+    border-bottom: 1px solid rgba(163, 177, 198, 0.25);
     vertical-align: middle;
+    background: transparent;
+  }
+
+  /* 1行まとめてグラデーション */
+  tbody tr {
+    background: linear-gradient(
+      to right,
+      #ffffff 0%,
+      var(--c-bg) 70%
+    );
   }
 
   tbody tr:last-child td { border-bottom: none; }
 }
 
-/* クリック可能行: ニューモフィズムでなく軽い bg 変化 (行は面積が広すぎてニューモ不向き) */
 .clickable {
   cursor: pointer;
-  transition: background-color var(--t-fast);
-  &:hover td { background: rgba(93, 193, 207, 0.06); }
+  transition: opacity var(--t-fast);
+  &:active td { opacity: 0.75; }
 }
 
-.empty { text-align: center; color: var(--c-gray-400); padding: var(--sp-8) var(--sp-4) !important; }
+.empty {
+  text-align: center; color: var(--c-gray-400);
+  padding: var(--sp-8) var(--sp-4) !important;
+  background: var(--c-bg) !important;
+}

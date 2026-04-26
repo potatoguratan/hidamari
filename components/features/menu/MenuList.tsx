@@ -142,7 +142,7 @@ function EditModal({
         {error && <p className={styles.error}>{error}</p>}
         <div className={styles.formActions}>
           <Button type="button" variant="ghost" onClick={onClose}>キャンセル</Button>
-          <Button type="submit" loading={saving}>更新</Button>
+          <Button type="submit" variant="ghost" loading={saving}>更新</Button>
         </div>
       </form>
     </Modal>
