@@ -3,8 +3,18 @@
 .text {}
 
 .title {
+  display: flex; align-items: center; gap: var(--sp-3);
   font-size: var(--fs-2xl); font-weight: var(--fw-bold); color: var(--c-gray-900);
+}
 
+.titleIcon {
+  font-size: 1.6rem;
+  color: var(--c-main);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.titleText {
   &::after {
     content: '';
     display: block; width: 48px; height: 3px;
