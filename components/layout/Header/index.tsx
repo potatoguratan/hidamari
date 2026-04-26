@@ -9,14 +9,15 @@ type Props = {
 }
 
 export default function Header({ userName }: Props) {
-  const toggleSidebar = useUiStore((s) => s.toggleSidebar)
+  const sidebarOpen  = useUiStore(s => s.sidebarOpen)
+  const toggleSidebar = useUiStore(s => s.toggleSidebar)
 
   return (
     <header className={styles.header}>
       <button
-        className={styles.menuBtn}
+        className={[styles.menuBtn, sidebarOpen ? styles.open : ""].filter(Boolean).join(" ")}
         onClick={toggleSidebar}
-        aria-label="メニューを開く"
+        aria-label={sidebarOpen ? "メニューを閉じる" : "メニューを開く"}
       >
         <span className={styles.menuIcon} />
         <span className={styles.menuIcon} />

@@ -1,5 +1,6 @@
 import "dotenv/config"
 import path from "path"
+import bcrypt from "bcryptjs"
 import { PrismaLibSql } from "@prisma/adapter-libsql"
 import { PrismaClient } from "../app/generated/prisma/client"
 
@@ -7,6 +8,17 @@ const dbPath = path.join(process.cwd(), "prisma", "dev.db").replace(/\\/g, "/")
 const adapter = new PrismaLibSql({ url: `file:${dbPath}` })
 const prisma = new PrismaClient({ adapter })
 
+// ── Staff ────────────────────────────────────────────────────────────────
+const STAFF_SEED = [
+  {
+    name:     "管理者",
+    email:    "developer@hidamari.com",
+    password: "hidamari2026",
+    role:     "ADMIN" as const,
+  },
+]
+
+// ── MenuItem ─────────────────────────────────────────────────────────────
 const MENU_ITEMS = [
   { name: "カット",         price: 4000, durationMin: 60,  sortOrder: 0  },
   { name: "フロントカット",  price: 2000, durationMin: 30,  sortOrder: 1  },
@@ -20,16 +32,30 @@ const MENU_ITEMS = [
   { name: "縮毛矯正",       price: 8000, durationMin: 210, sortOrder: 9  },
 ]
 
-async function main() {
-  const existing = await prisma.menuItem.count()
+async function seedStaff() {
+  for (const s of STAFF_SEED) {
+    const exists = await prisma.staff.findUnique({ where: { email: s.email } })
+    if (exists) {
+      console.log(`Staff already exists: ${s.email}`)
+      continue
+    }
+    const hashed = await bcrypt.hash(s.password, 12)
+    await prisma.staff.create({
+      data: { name: s.name, email: s.email, password: hashed, role: s.role },
+    })
+    console.log(`Created staff: ${s.email}`)
+  }
+}
 
+async function seedMenu() {
+  const existing = await prisma.menuItem.count()
   if (existing === 0) {
     const result = await prisma.menuItem.createMany({ data: MENU_ITEMS })
     console.log(`Seeded ${result.count} menu items.`)
     return
   }
 
-  // 既存データの sortOrder がすべて 0 なら順番を付け直す
+  // 既存データの sortOrder がすべて 0 なら連番を振り直す
   const zeroCount = await prisma.menuItem.count({ where: { sortOrder: 0 } })
   if (zeroCount === existing) {
     const items = await prisma.menuItem.findMany({ orderBy: { name: "asc" } })
@@ -38,8 +64,13 @@ async function main() {
     }
     console.log(`Updated sortOrder for ${items.length} existing items.`)
   } else {
-    console.log(`Skipped: ${existing} menu items already exist with sortOrder set.`)
+    console.log(`Skipped menu: ${existing} items already exist.`)
   }
+}
+
+async function main() {
+  await seedStaff()
+  await seedMenu()
 }
 
 main()

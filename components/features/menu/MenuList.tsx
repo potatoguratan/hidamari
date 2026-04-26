@@ -249,12 +249,16 @@ function SortableRow({
 }
 
 // ─── メインコンポーネント ────────────────────────────────────────────────
-export function MenuList() {
+type MenuListProps = {
+  addOpen: boolean
+  onAddClose: () => void
+}
+
+export function MenuList({ addOpen, onAddClose }: MenuListProps) {
   const [items, setItems] = useState<MenuItem[]>([])
   const [loading, setLoading] = useState(true)
   const [fetchError, setFetchError] = useState("")
   const [refreshKey, setRefreshKey] = useState(0)
-  const [addOpen, setAddOpen] = useState(false)
   const [editTarget, setEditTarget] = useState<MenuItem | null>(null)
   const [deleteTarget, setDeleteTarget] = useState<MenuItem | null>(null)
 
@@ -302,10 +306,6 @@ export function MenuList() {
 
   return (
     <>
-      <div className={styles.toolbar}>
-        <Button variant="ghost" onClick={() => setAddOpen(true)}>メニュー追加</Button>
-      </div>
-
       {loading ? (
         <p className={styles.loadingText}>読み込み中...</p>
       ) : fetchError ? (
@@ -347,7 +347,7 @@ export function MenuList() {
 
       {addOpen && (
         <AddModal
-          onClose={() => setAddOpen(false)}
+          onClose={onAddClose}
           onSaved={refresh}
         />
       )}

@@ -6,7 +6,7 @@
   display: flex; flex-direction: column; flex-shrink: 0;
   position: sticky; top: 0;
   @include mobile-and-tablet {
-    position: fixed; top: 0; left: 0; z-index: 100;
+    position: fixed; top: 0; left: 0; z-index: 300;
     transform: translateX(-100%);
     transition: transform var(--t-normal);
     &.open { transform: translateX(0); }
@@ -17,7 +17,7 @@
   display: none;
   @include mobile-and-tablet {
     display: block; position: fixed; inset: 0;
-    background: rgba(0, 0, 0, 0.45); z-index: 99;
+    background: rgba(0, 0, 0, 0.45); z-index: 299;
   }
 }
 
@@ -29,7 +29,7 @@
 .logoText {
   font-size: var(--fs-xl);
   font-weight: var(--fw-bold);
-  color: var(--c-accent);
+  color: var(--c-white);
   letter-spacing: 0.08em;
 }
 
