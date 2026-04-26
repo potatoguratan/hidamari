@@ -1,0 +1,439 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+}
+
+/* ── 月ナビゲーション ──────────────────────────────────── */
+.calHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-4);
+}
+
+.monthTitle {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  color: var(--c-gray-900);
+  min-width: 160px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+}
+
+.loadingDot {
+  font-size: var(--fs-sm);
+  color: var(--c-gray-400);
+  animation: blink 1s ease infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
+
+/* ニューモフィズム ナビボタン */
+.navBtn {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--c-bg);
+  border: none; cursor: pointer;
+  border-radius: var(--radius);
+  font-size: 1.1rem;
+  color: var(--c-main);
+  box-shadow: var(--shadow-neu-sm);
+  transition: box-shadow var(--t-fast);
+
+  &:active { box-shadow: var(--shadow-neu-in); }
+}
+
+/* ── カレンダー ────────────────────────────────────────── */
+.calendar {
+  background: var(--c-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-neu);
+  overflow: hidden;
+}
+
+/* 曜日ヘッダー */
+.dayHeaders {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: var(--c-main);
+}
+
+.dayHeader {
+  padding: var(--sp-2);
+  text-align: center;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: rgba(255, 255, 255, 0.88);
+
+  &.sun { color: rgba(255, 190, 190, 0.95); }
+  &.sat { color: rgba(190, 235, 255, 0.95); }
+}
+
+/* 日付グリッド */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.cell {
+  min-height: 76px;
+  padding: var(--sp-2);
+  border-right: 1px solid rgba(163, 177, 198, 0.2);
+  border-bottom: 1px solid rgba(163, 177, 198, 0.2);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  transition: box-shadow var(--t-fast);
+
+  /* 最終列はボーダーなし */
+  &:nth-child(7n) { border-right: none; }
+
+  /* 他の月の日付 */
+  &.otherMonth {
+    background: rgba(163, 177, 198, 0.06);
+    .dayNum { color: var(--c-gray-300); }
+  }
+
+  /* 選択中: 背景色は変えずに inset シャドウのみ */
+  &.selected {
+    box-shadow: var(--shadow-neu-in);
+  }
+
+  /* 日・土の色 */
+  &.sun:not(.otherMonth) .dayNum { color: #e05050; }
+  &.sat:not(.otherMonth) .dayNum { color: var(--c-main-dark); }
+
+  /* 今日（選択・他月より優先するため後に定義） */
+  &.today .dayNum {
+    background: var(--c-main);
+    color: var(--c-white) !important;
+    border-radius: 50%;
+  }
+
+  @include mobile {
+    min-height: 48px;
+    padding: var(--sp-1);
+  }
+}
+
+.dayNum {
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  color: var(--c-gray-700);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* 予約ドット */
+.dots {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2px;
+  min-height: 8px;
+}
+
+.dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--c-main);
+  flex-shrink: 0;
+
+  &.cancelled { background: var(--c-danger); }
+  &.completed { background: var(--c-gray-400); }
+}
+
+.overflow {
+  font-size: 10px;
+  color: var(--c-gray-500);
+  line-height: 1;
+}
+
+/* ── 選択日 詳細パネル ─────────────────────────────────── */
+.detailPanel {
+  background: var(--c-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-neu);
+  overflow: hidden;
+  animation: slideIn 220ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-8px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+.detailHeader {
+  background: var(--c-accent);
+  padding: var(--sp-2) var(--sp-4);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.detailDate {
+  font-size: var(--fs-base);
+  font-weight: var(--fw-semibold);
+  color: var(--c-gray-800);
+}
+
+.detailHeaderRight {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.detailCount {
+  font-size: var(--fs-sm);
+  color: var(--c-brown-dark);
+  font-weight: var(--fw-medium);
+  white-space: nowrap;
+}
+
+/* 日別予約表への矢印リンクボタン */
+.dayViewBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px; height: 32px;
+  border-radius: var(--radius);
+  background: var(--c-accent);
+  color: var(--c-gray-800);
+  font-size: 1rem;
+  text-decoration: none;
+  flex-shrink: 0;
+  box-shadow:
+    4px 4px 10px rgba(190, 140, 50, 0.35),
+    -4px -4px 10px rgba(255, 248, 210, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+
+  &:active {
+    box-shadow:
+      inset 4px 4px 8px rgba(190, 140, 50, 0.35),
+      inset -4px -4px 8px rgba(255, 248, 210, 0.65);
+  }
+}
+
+.detailBody {
+  padding: var(--sp-2) var(--sp-4) var(--sp-4);
+}
+
+.emptyDay {
+  text-align: center;
+  color: var(--c-gray-400);
+  font-size: var(--fs-sm);
+  padding: var(--sp-6) 0;
+}
+
+.reservationItem {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--sp-3);
+  padding: var(--sp-3) 0;
+  border-bottom: 1px solid rgba(163, 177, 198, 0.2);
+
+  &:last-child { border-bottom: none; }
+
+  @include mobile { flex-wrap: wrap; }
+}
+
+.timeRange {
+  font-size: var(--fs-sm);
+  color: var(--c-main-dark);
+  font-weight: var(--fw-semibold);
+  min-width: 110px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.reservationInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.customerName {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--c-gray-900);
+}
+
+.menuNames {
+  font-size: var(--fs-xs);
+  color: var(--c-gray-500);
+}
+
+/* ── 予約追加モーダル内フォーム ───────────────────────────────────────── */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+/* モード切り替えタブ */
+.modeToggle {
+  display: flex;
+  gap: 3px;
+  background: var(--c-bg);
+  border-radius: var(--radius);
+  padding: 3px;
+  box-shadow: var(--shadow-neu-in);
+}
+
+.modeBtn {
+  flex: 1;
+  padding: var(--sp-2);
+  border: none;
+  border-radius: calc(var(--radius) - 2px);
+  background: transparent;
+  cursor: pointer;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--c-gray-500);
+  transition: all var(--t-fast);
+  font-family: inherit;
+}
+
+.modeBtnActive {
+  background: var(--c-bg);
+  color: var(--c-main);
+  font-weight: var(--fw-semibold);
+  box-shadow: var(--shadow-neu-sm);
+}
+
+/* フィールド群 */
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.fieldLabel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--c-gray-700);
+}
+
+.required { color: var(--c-danger); }
+
+/* セレクトボックス（Input と同じニューモフィズム） */
+.select {
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  border: none;
+  border-radius: var(--radius);
+  font-size: var(--fs-base);
+  color: var(--c-gray-900);
+  background: var(--c-bg);
+  box-shadow:
+    inset 3px 3px 7px rgba(163, 177, 198, 0.42),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.88);
+  cursor: pointer;
+  font-family: inherit;
+  outline: 2px solid transparent;
+  transition: outline-color 150ms ease;
+
+  &:focus { outline: 2px solid var(--c-main); outline-offset: 0; }
+}
+
+/* 時間（2列） */
+.timeRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+
+/* メニュー選択リスト */
+.menuCheckList {
+  margin-top: var(--sp-1);
+  max-height: 160px;
+  overflow-y: auto;
+  background: var(--c-bg);
+  border-radius: var(--radius);
+  padding: var(--sp-2) var(--sp-3);
+  box-shadow: var(--shadow-neu-in);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.checkItem {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--c-gray-800);
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    accent-color: var(--c-main);
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+}
+
+.menuMeta {
+  margin-left: auto;
+  font-size: var(--fs-xs);
+  color: var(--c-gray-400);
+  white-space: nowrap;
+}
+
+.loadingText {
+  font-size: var(--fs-sm);
+  color: var(--c-gray-400);
+  text-align: center;
+  padding: var(--sp-2) 0;
+}
+
+/* テキストエリア */
+.textarea {
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  border: none;
+  border-radius: var(--radius);
+  font-size: var(--fs-base);
+  color: var(--c-gray-900);
+  background: var(--c-bg);
+  box-shadow:
+    inset 3px 3px 7px rgba(163, 177, 198, 0.42),
+    inset -3px -3px 7px rgba(255, 255, 255, 0.88);
+  resize: vertical;
+  min-height: 60px;
+  font-family: inherit;
+  outline: 2px solid transparent;
+  transition: outline-color 150ms ease;
+
+  &:focus { outline: 2px solid var(--c-main); outline-offset: 0; }
+}
+
+/* フォームフッター */
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-3);
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--c-gray-100);
+}
+
+.formError {
+  font-size: var(--fs-sm);
+  color: var(--c-danger);
+}

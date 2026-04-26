@@ -1,0 +1,134 @@
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-size: var(--fs-sm);
+  color: var(--c-main);
+  text-decoration: none;
+  margin-bottom: var(--sp-4);
+
+  &:active { opacity: 0.7; }
+}
+
+/* ガントラッパー */
+.ganttWrapper {
+  background: var(--c-bg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-neu);
+  overflow: hidden;
+}
+
+.gantt {
+  display: grid;
+  grid-template-columns: 56px 1fr;
+  overflow-y: auto;
+  max-height: 75dvh;
+}
+
+/* 時刻軸 */
+.timeAxis {
+  border-right: 2px solid var(--c-main);
+  flex-shrink: 0;
+}
+
+.hourRow {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 4px;
+  border-bottom: 1px solid rgba(163, 177, 198, 0.15);
+  box-sizing: border-box;
+  height: 80px;
+}
+
+.hourLabel {
+  font-size: var(--fs-xs);
+  color: var(--c-gray-400);
+  font-weight: var(--fw-medium);
+  padding-left: var(--sp-2);
+  white-space: nowrap;
+}
+
+/* 予約ブロックエリア */
+.blocksArea {
+  position: relative;
+  /* 1時間 = 80px のグリッドライン */
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(163, 177, 198, 0.15) 0px,
+    rgba(163, 177, 198, 0.15) 1px,
+    transparent 1px,
+    transparent 80px
+  );
+}
+
+/* 予約ブロック */
+.block {
+  position: absolute;
+  left: var(--sp-2);
+  right: var(--sp-2);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-1) var(--sp-2);
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--c-main) 0%, var(--c-main-dark) 100%);
+  border-left: 3px solid rgba(255, 255, 255, 0.4);
+  color: var(--c-white);
+  box-shadow: 2px 3px 10px rgba(74, 144, 168, 0.35);
+  cursor: default;
+  min-height: 28px;
+
+  &.cancelled {
+    background: linear-gradient(135deg, var(--c-gray-400), var(--c-gray-500));
+    border-left-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 2px 3px 10px rgba(100, 116, 139, 0.25);
+  }
+
+  &.completed {
+    background: linear-gradient(135deg, #5aad8a, #3d8a6b);
+    border-left-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 2px 3px 10px rgba(61, 138, 107, 0.3);
+  }
+}
+
+.blockTime {
+  font-size: 10px;
+  opacity: 0.85;
+  display: block;
+  line-height: 1.4;
+}
+
+.blockCustomer {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  display: block;
+  line-height: 1.4;
+}
+
+.blockMenus {
+  font-size: 10px;
+  opacity: 0.82;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+}
+
+/* 空表示 */
+.empty {
+  text-align: center;
+  color: var(--c-gray-400);
+  font-size: var(--fs-sm);
+  padding: var(--sp-8) var(--sp-4);
+}
+
+.loadingText {
+  color: var(--c-gray-400);
+  font-size: var(--fs-sm);
+  padding: var(--sp-4);
+}
+
+.fetchError {
+  color: var(--c-danger);
+  font-size: var(--fs-sm);
+  padding: var(--sp-4);
+}
