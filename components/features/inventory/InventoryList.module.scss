@@ -1,0 +1,212 @@
+.tableWrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-lg);
+  background: var(--c-bg);
+  box-shadow: 6px 6px 14px rgba(163, 177, 198, 0.6);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+  background: transparent;
+
+  th {
+    padding: var(--sp-3) var(--sp-4);
+    text-align: left;
+    font-weight: var(--fw-semibold);
+    color: var(--c-white);
+    background: var(--c-main);
+    white-space: nowrap;
+    &:first-child { border-radius: calc(var(--radius-lg) - 1px) 0 0 0; }
+    &:last-child  { border-radius: 0 calc(var(--radius-lg) - 1px) 0 0; }
+  }
+
+  td {
+    padding: var(--sp-3) var(--sp-4);
+    color: var(--c-gray-800);
+    border-bottom: 1px solid rgba(163, 177, 198, 0.25);
+    vertical-align: middle;
+    background: transparent;
+  }
+
+  tbody tr {
+    background: linear-gradient(to right, #ffffff 0%, var(--c-bg) 70%);
+  }
+
+  tbody tr:last-child td { border-bottom: none; }
+}
+
+/* カテゴリ区切り行 */
+.categoryRow td {
+  padding: var(--sp-2) var(--sp-4) !important;
+  background: var(--c-accent) !important;
+  color: var(--c-brown) !important;
+  font-weight: var(--fw-semibold);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.05em;
+  border-bottom: none !important;
+}
+
+.emptyCell {
+  text-align: center;
+  color: var(--c-gray-400);
+  padding: var(--sp-8) var(--sp-4);
+}
+
+.emptyCatCell {
+  text-align: center;
+  color: var(--c-gray-400);
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--fs-xs);
+  font-style: italic;
+}
+
+.loadingText {
+  color: var(--c-gray-400);
+  font-size: var(--fs-sm);
+  padding: var(--sp-4);
+}
+
+.fetchError {
+  font-size: var(--fs-sm);
+  color: var(--c-danger);
+  padding: var(--sp-4);
+}
+
+/* 3点リーダーボタン */
+.dotBtn {
+  width: 32px;
+  height: 32px;
+  padding: 0 !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius) !important;
+  font-size: 1rem;
+}
+
+/* モーダル内フォーム */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+/* select 用（Input と同じニューモフィズム凹み） */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.fieldLabel {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--c-gray-700);
+}
+
+.select {
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  border: none;
+  border-radius: var(--radius);
+  font-size: var(--fs-base);
+  color: var(--c-gray-900);
+  background: var(--c-bg);
+  box-shadow: var(--shadow-neu-in);
+  outline: 2px solid transparent;
+  transition: outline-color 150ms ease;
+  cursor: pointer;
+  font-family: inherit;
+
+  &:focus {
+    outline: 2px solid var(--c-main);
+    outline-offset: 0;
+  }
+}
+
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--sp-3);
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--c-gray-100);
+}
+
+.formActionsSpread {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--c-gray-100);
+}
+
+.formActionsRight {
+  display: flex;
+  gap: var(--sp-3);
+}
+
+.error {
+  font-size: var(--fs-sm);
+  color: var(--c-danger);
+}
+
+/* アクションモーダル上部のアラート情報エリア */
+.alertInfoBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--c-bg);
+  border-radius: var(--radius);
+  padding: var(--sp-3) var(--sp-4);
+  box-shadow: var(--shadow-neu-in);
+  margin-bottom: var(--sp-4);
+}
+
+.alertInfoLabel {
+  font-size: var(--fs-sm);
+  color: var(--c-gray-500);
+}
+
+.alertInfoValue {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--c-gray-800);
+}
+
+/* 削除確認モーダル */
+.deleteContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.dl {
+  background: var(--c-bg);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  box-shadow: var(--shadow-neu-in);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.dlRow {
+  display: flex;
+  gap: var(--sp-4);
+  font-size: var(--fs-sm);
+
+  dt { color: var(--c-gray-500); width: 90px; flex-shrink: 0; }
+  dd { color: var(--c-gray-900); font-weight: var(--fw-medium); }
+}
+
+.deleteWarning {
+  font-size: var(--fs-sm);
+  color: var(--c-gray-600);
+  padding: var(--sp-3) var(--sp-4);
+  border-left: 3px solid var(--c-danger);
+  background: rgba(239, 68, 68, 0.05);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}

@@ -90,10 +90,66 @@ async function seedMenu() {
   }
 }
 
+// ── Inventory ─────────────────────────────────────────────────────────────
+const INVENTORY_SEED: {
+  category: string
+  items: { name: string; quantity: number; unit: string; alertThreshold: number }[]
+}[] = [
+  {
+    category: "カラー材",
+    items: [
+      { name: "アルカリカラー",  quantity: 80,  unit: "g",  alertThreshold: 20 },
+      { name: "オキサイド 3%",   quantity: 200, unit: "mL", alertThreshold: 50 },
+      { name: "オキサイド 6%",   quantity: 150, unit: "mL", alertThreshold: 50 },
+      { name: "ブリーチ剤",      quantity: 30,  unit: "g",  alertThreshold: 10 },
+    ],
+  },
+  {
+    category: "パーマ液",
+    items: [
+      { name: "パーマ液 1液", quantity: 8,  unit: "本", alertThreshold: 3 },
+      { name: "パーマ液 2液", quantity: 10, unit: "本", alertThreshold: 3 },
+    ],
+  },
+  {
+    category: "トリートメント",
+    items: [
+      { name: "トリートメント剤",   quantity: 600, unit: "g",  alertThreshold: 100 },
+      { name: "スカルプエッセンス", quantity: 180, unit: "mL", alertThreshold:  50 },
+    ],
+  },
+  {
+    category: "消耗品",
+    items: [
+      { name: "タオル",       quantity: 45, unit: "枚", alertThreshold: 10 },
+      { name: "カットクロス", quantity: 28, unit: "枚", alertThreshold:  5 },
+      { name: "アルミホイル", quantity:  3, unit: "本", alertThreshold:  1 },
+    ],
+  },
+]
+
+async function seedInventory() {
+  const existing = await prisma.inventoryCategory.count()
+  if (existing > 0) {
+    console.log(`Skipped inventory: ${existing} categories already exist.`)
+    return
+  }
+  let total = 0
+  for (const { category, items } of INVENTORY_SEED) {
+    const cat = await prisma.inventoryCategory.create({ data: { name: category } })
+    await prisma.inventoryItem.createMany({
+      data: items.map(item => ({ ...item, categoryId: cat.id })),
+    })
+    total += items.length
+  }
+  console.log(`Seeded ${INVENTORY_SEED.length} categories, ${total} inventory items.`)
+}
+
 async function main() {
   await seedStaff()
   await seedMenu()
   await seedCustomers()
+  await seedInventory()
 }
 
 main()
