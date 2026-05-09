@@ -13,7 +13,6 @@ export default function CustomerPageClient() {
     <>
       <PageHeader
         title="顧客管理"
-        description="顧客カルテの閲覧・管理"
         icon={FaRegAddressBook}
         actions={
           <Button variant="ghost" onClick={() => setAddOpen(true)}>
