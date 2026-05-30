@@ -117,7 +117,6 @@ export function AddReservationModal({
     })
     setSaving(false)
 
-    if (res.status === 409) { setError("ダブルブッキングが検出されました"); return }
     if (!res.ok) { setError("予約の登録に失敗しました"); return }
 
     onSaved(); onClose()
