@@ -18,21 +18,22 @@ import Button from "@/components/ui/Button"
 import Modal from "@/components/ui/Modal"
 import Input from "@/components/ui/Input"
 import Badge from "@/components/ui/Badge"
-import type { MenuItem, MenuItemFormData } from "@/types/menu"
+import type { MenuItem, MenuItemFormData, MenuItemType } from "@/types/menu"
 import styles from "./MenuList.module.scss"
 
-const EMPTY_FORM: MenuItemFormData = { name: "", price: 0, durationMin: 0, isActive: true }
+const EMPTY_FORM: MenuItemFormData = { name: "", price: 0, durationMin: 0, menuType: "TREATMENT", isActive: true }
 
 // ─── 追加モーダル ────────────────────────────────────────────────────────
-// 条件付きレンダリング前提（{addOpen && <AddModal>}）のため open prop 不要
 function AddModal({
-  onClose, onSaved,
-}: { onClose: () => void; onSaved: () => void }) {
-  const [form, setForm] = useState<MenuItemFormData>(EMPTY_FORM)
+  defaultType,
+  onClose,
+  onSaved,
+}: { defaultType: MenuItemType; onClose: () => void; onSaved: () => void }) {
+  const [form, setForm] = useState<MenuItemFormData>({ ...EMPTY_FORM, menuType: defaultType })
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState("")
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault()
     setSaving(true); setError("")
     const res = await fetch("/api/menu", {
@@ -64,15 +65,17 @@ function AddModal({
           min={0}
           placeholder="例: 4000"
         />
-        <Input
-          label="所要時間（分）"
-          type="number"
-          value={form.durationMin || ""}
-          onChange={e => setForm(f => ({ ...f, durationMin: Number(e.target.value) }))}
-          required
-          min={1}
-          placeholder="例: 60"
-        />
+        {form.menuType === "TREATMENT" && (
+          <Input
+            label="所要時間（分）"
+            type="number"
+            value={form.durationMin || ""}
+            onChange={e => setForm(f => ({ ...f, durationMin: Number(e.target.value) }))}
+            required
+            min={1}
+            placeholder="例: 60"
+          />
+        )}
         <label className={styles.checkLabel}>
           <input
             type="checkbox"
@@ -92,20 +95,20 @@ function AddModal({
   )
 }
 
-// ─── アクションモーダル（編集 + 削除を1つに統合）────────────────────────
+// ─── アクションモーダル ──────────────────────────────────────────────────
 function ItemActionModal({
   onClose, onSaved, item,
 }: { onClose: () => void; onSaved: () => void; item: MenuItem }) {
   const [mode, setMode] = useState<"edit" | "deleteConfirm">("edit")
   const [form, setForm] = useState<MenuItemFormData>({
     name: item.name, price: item.price,
-    durationMin: item.durationMin, isActive: item.isActive,
+    durationMin: item.durationMin, menuType: item.menuType, isActive: item.isActive,
   })
   const [saving, setSaving] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [error, setError] = useState("")
 
-  async function handleUpdate(e: React.FormEvent) {
+  async function handleUpdate(e: React.SyntheticEvent<HTMLFormElement>) {
     e.preventDefault()
     setSaving(true); setError("")
     const res = await fetch(`/api/menu/${item.id}`, {
@@ -136,24 +139,14 @@ function ItemActionModal({
             <div className={styles.dlRow}><dt>所要時間</dt><dd>{item.durationMin}分</dd></div>
             <div className={styles.dlRow}>
               <dt>状態</dt>
-              <dd>
-                <Badge variant={item.isActive ? "success" : "default"}>
-                  {item.isActive ? "有効" : "無効"}
-                </Badge>
-              </dd>
+              <dd><Badge variant={item.isActive ? "success" : "default"}>{item.isActive ? "有効" : "無効"}</Badge></dd>
             </div>
           </dl>
-          <p className={styles.deleteWarning}>
-            このメニューを削除しますか？この操作は取り消せません。
-          </p>
+          <p className={styles.deleteWarning}>このメニューを削除しますか？この操作は取り消せません。</p>
           {error && <p className={styles.error}>{error}</p>}
           <div className={styles.formActions}>
-            <Button type="button" variant="ghost" onClick={() => { setMode("edit"); setError("") }}>
-              戻る
-            </Button>
-            <Button type="button" variant="danger" loading={deleting} onClick={handleDelete}>
-              削除する
-            </Button>
+            <Button type="button" variant="ghost" onClick={() => { setMode("edit"); setError("") }}>戻る</Button>
+            <Button type="button" variant="danger" loading={deleting} onClick={handleDelete}>削除する</Button>
           </div>
         </div>
       </Modal>
@@ -163,6 +156,17 @@ function ItemActionModal({
   return (
     <Modal open onClose={onClose} title="メニュー編集" size="sm">
       <form onSubmit={handleUpdate} className={styles.form}>
+        <div className={styles.field}>
+          <label className={styles.fieldLabel}>種類</label>
+          <select
+            className={styles.select}
+            value={form.menuType}
+            onChange={e => setForm(f => ({ ...f, menuType: e.target.value as MenuItemType }))}
+          >
+            <option value="TREATMENT">施術メニュー</option>
+            <option value="RETAIL">物販メニュー</option>
+          </select>
+        </div>
         <Input
           label="メニュー名"
           value={form.name}
@@ -177,14 +181,16 @@ function ItemActionModal({
           required
           min={0}
         />
-        <Input
-          label="所要時間（分）"
-          type="number"
-          value={form.durationMin}
-          onChange={e => setForm(f => ({ ...f, durationMin: Number(e.target.value) }))}
-          required
-          min={1}
-        />
+        {form.menuType === "TREATMENT" && (
+          <Input
+            label="所要時間（分）"
+            type="number"
+            value={form.durationMin}
+            onChange={e => setForm(f => ({ ...f, durationMin: Number(e.target.value) }))}
+            required
+            min={1}
+          />
+        )}
         <label className={styles.checkLabel}>
           <input
             type="checkbox"
@@ -196,9 +202,7 @@ function ItemActionModal({
         </label>
         {error && <p className={styles.error}>{error}</p>}
         <div className={styles.formActionsSpread}>
-          <Button type="button" variant="danger" onClick={() => { setMode("deleteConfirm"); setError("") }}>
-            削除
-          </Button>
+          <Button type="button" variant="danger" onClick={() => { setMode("deleteConfirm"); setError("") }}>削除</Button>
           <div className={styles.formActionsRight}>
             <Button type="button" variant="ghost" onClick={onClose}>キャンセル</Button>
             <Button type="submit" loading={saving}>更新</Button>
@@ -210,12 +214,7 @@ function ItemActionModal({
 }
 
 // ─── ドラッグ可能な行 ────────────────────────────────────────────────────
-function SortableRow({
-  item, onAction,
-}: {
-  item: MenuItem
-  onAction: (item: MenuItem) => void
-}) {
+function SortableRow({ item, onAction }: { item: MenuItem; onAction: (item: MenuItem) => void }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } =
     useSortable({ id: item.id })
 
@@ -232,7 +231,7 @@ function SortableRow({
       </td>
       <td>{item.name}</td>
       <td>¥{item.price.toLocaleString()}</td>
-      <td>{item.durationMin}分</td>
+      <td>{item.durationMin > 0 ? `${item.durationMin}分` : "—"}</td>
       <td>
         <Badge variant={item.isActive ? "success" : "default"}>
           {item.isActive ? "有効" : "無効"}
@@ -253,16 +252,13 @@ function SortableRow({
 }
 
 // ─── メインコンポーネント ────────────────────────────────────────────────
-type MenuListProps = {
-  addOpen: boolean
-  onAddClose: () => void
-}
-
-export function MenuList({ addOpen, onAddClose }: MenuListProps) {
+export function MenuList() {
   const [items, setItems] = useState<MenuItem[]>([])
+  const [activeTab, setActiveTab] = useState<MenuItemType>("TREATMENT")
   const [loading, setLoading] = useState(true)
   const [fetchError, setFetchError] = useState("")
   const [refreshKey, setRefreshKey] = useState(0)
+  const [addOpen, setAddOpen] = useState(false)
   const [actionTarget, setActionTarget] = useState<MenuItem | null>(null)
 
   const refresh = () => setRefreshKey(k => k + 1)
@@ -275,27 +271,26 @@ export function MenuList({ addOpen, onAddClose }: MenuListProps) {
   function handleDragEnd(event: DragEndEvent) {
     const { active, over } = event
     if (!over || active.id === over.id) return
-    setItems(prev => {
-      const oldIndex = prev.findIndex(i => i.id === active.id)
-      const newIndex = prev.findIndex(i => i.id === over.id)
-      const next = arrayMove(prev, oldIndex, newIndex)
-      fetch("/api/menu/reorder", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items: next.map((item, idx) => ({ id: item.id, sortOrder: idx })) }),
-      }).catch(console.error)
-      return next
-    })
+
+    const visible = items.filter(i => i.menuType === activeTab)
+    const oldIndex = visible.findIndex(i => i.id === active.id)
+    const newIndex = visible.findIndex(i => i.id === over.id)
+    const reordered = arrayMove(visible, oldIndex, newIndex)
+    const others = items.filter(i => i.menuType !== activeTab)
+
+    setItems([...others, ...reordered])
+    fetch("/api/menu/reorder", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ items: reordered.map((item, idx) => ({ id: item.id, sortOrder: idx })) }),
+    }).catch(console.error)
   }
 
   useEffect(() => {
     async function load() {
       try {
         const res = await fetch("/api/menu")
-        if (!res.ok) {
-          setFetchError(`データ取得に失敗しました (${res.status})`)
-          return
-        }
+        if (!res.ok) { setFetchError(`データ取得に失敗しました (${res.status})`); return }
         setItems(await res.json())
         setFetchError("")
       } catch {
@@ -307,8 +302,25 @@ export function MenuList({ addOpen, onAddClose }: MenuListProps) {
     load()
   }, [refreshKey])
 
+  const visibleItems = items.filter(i => i.menuType === activeTab)
+
   return (
     <>
+      <div className={styles.tabRow}>
+        <div className={styles.tabBar}>
+          {(["TREATMENT", "RETAIL"] as MenuItemType[]).map(type => (
+            <button
+              key={type}
+              className={[styles.tab, activeTab === type ? styles.tabActive : ""].join(" ")}
+              onClick={() => setActiveTab(type)}
+            >
+              {type === "TREATMENT" ? "施術メニュー" : "物販メニュー"}
+            </button>
+          ))}
+        </div>
+        <Button variant="ghost" onClick={() => setAddOpen(true)}>メニュー追加</Button>
+      </div>
+
       {loading ? (
         <p className={styles.loadingText}>読み込み中...</p>
       ) : fetchError ? (
@@ -328,16 +340,12 @@ export function MenuList({ addOpen, onAddClose }: MenuListProps) {
                 </tr>
               </thead>
               <tbody>
-                <SortableContext items={items.map(i => i.id)} strategy={verticalListSortingStrategy}>
-                  {items.length === 0 ? (
+                <SortableContext items={visibleItems.map(i => i.id)} strategy={verticalListSortingStrategy}>
+                  {visibleItems.length === 0 ? (
                     <tr><td colSpan={6} className={styles.emptyCell}>メニューがありません</td></tr>
                   ) : (
-                    items.map(item => (
-                      <SortableRow
-                        key={item.id}
-                        item={item}
-                        onAction={setActionTarget}
-                      />
+                    visibleItems.map(item => (
+                      <SortableRow key={item.id} item={item} onAction={setActionTarget} />
                     ))
                   )}
                 </SortableContext>
@@ -349,7 +357,8 @@ export function MenuList({ addOpen, onAddClose }: MenuListProps) {
 
       {addOpen && (
         <AddModal
-          onClose={onAddClose}
+          defaultType={activeTab}
+          onClose={() => setAddOpen(false)}
           onSaved={refresh}
         />
       )}

@@ -41,17 +41,27 @@ async function seedCustomers() {
 }
 
 // ── MenuItem ─────────────────────────────────────────────────────────────
-const MENU_ITEMS = [
-  { name: "カット",         price: 4000, durationMin: 60,  sortOrder: 0  },
-  { name: "フロントカット",  price: 2000, durationMin: 30,  sortOrder: 1  },
-  { name: "カラー",         price: 6000, durationMin: 90,  sortOrder: 2  },
-  { name: "ブリーチ（1回）", price: 5000, durationMin: 90,  sortOrder: 3  },
-  { name: "ハイライト",     price: 4000, durationMin: 60,  sortOrder: 4  },
-  { name: "インナーカラー",  price: 3000, durationMin: 60,  sortOrder: 5  },
-  { name: "パーマ",         price: 6000, durationMin: 90,  sortOrder: 6  },
-  { name: "デジタルパーマ",  price: 5000, durationMin: 90,  sortOrder: 7  },
-  { name: "トリートメント",  price: 1500, durationMin: 15,  sortOrder: 8  },
-  { name: "縮毛矯正",       price: 8000, durationMin: 210, sortOrder: 9  },
+const TREATMENT_ITEMS = [
+  { name: "カット",         price: 4000, durationMin: 60,  menuType: "TREATMENT" as const, sortOrder: 0 },
+  { name: "フロントカット",  price: 2000, durationMin: 30,  menuType: "TREATMENT" as const, sortOrder: 1 },
+  { name: "カラー",         price: 6000, durationMin: 90,  menuType: "TREATMENT" as const, sortOrder: 2 },
+  { name: "ブリーチ（1回）", price: 5000, durationMin: 90,  menuType: "TREATMENT" as const, sortOrder: 3 },
+  { name: "ハイライト",     price: 4000, durationMin: 60,  menuType: "TREATMENT" as const, sortOrder: 4 },
+  { name: "インナーカラー",  price: 3000, durationMin: 60,  menuType: "TREATMENT" as const, sortOrder: 5 },
+  { name: "パーマ",         price: 6000, durationMin: 90,  menuType: "TREATMENT" as const, sortOrder: 6 },
+  { name: "デジタルパーマ",  price: 5000, durationMin: 90,  menuType: "TREATMENT" as const, sortOrder: 7 },
+  { name: "トリートメント",  price: 1500, durationMin: 15,  menuType: "TREATMENT" as const, sortOrder: 8 },
+  { name: "縮毛矯正",       price: 8000, durationMin: 210, menuType: "TREATMENT" as const, sortOrder: 9 },
+]
+
+const RETAIL_ITEMS = [
+  { name: "シャンプー",           price: 1500, durationMin: 0, menuType: "RETAIL" as const, sortOrder: 0 },
+  { name: "コンディショナー",      price: 1500, durationMin: 0, menuType: "RETAIL" as const, sortOrder: 1 },
+  { name: "トリートメントマスク",   price: 2500, durationMin: 0, menuType: "RETAIL" as const, sortOrder: 2 },
+  { name: "ヘアオイル",           price: 2200, durationMin: 0, menuType: "RETAIL" as const, sortOrder: 3 },
+  { name: "ヘアワックス",          price: 1200, durationMin: 0, menuType: "RETAIL" as const, sortOrder: 4 },
+  { name: "スタイリングスプレー",   price: 1000, durationMin: 0, menuType: "RETAIL" as const, sortOrder: 5 },
+  { name: "ヘアセラム",           price: 2800, durationMin: 0, menuType: "RETAIL" as const, sortOrder: 6 },
 ]
 
 async function seedStaff() {
@@ -70,23 +80,20 @@ async function seedStaff() {
 }
 
 async function seedMenu() {
-  const existing = await prisma.menuItem.count()
-  if (existing === 0) {
-    const result = await prisma.menuItem.createMany({ data: MENU_ITEMS })
-    console.log(`Seeded ${result.count} menu items.`)
-    return
+  const treatmentCount = await prisma.menuItem.count({ where: { menuType: "TREATMENT" } })
+  if (treatmentCount === 0) {
+    const result = await prisma.menuItem.createMany({ data: TREATMENT_ITEMS })
+    console.log(`Seeded ${result.count} treatment menu items.`)
+  } else {
+    console.log(`Skipped treatment menus: ${treatmentCount} already exist.`)
   }
 
-  // 既存データの sortOrder がすべて 0 なら連番を振り直す
-  const zeroCount = await prisma.menuItem.count({ where: { sortOrder: 0 } })
-  if (zeroCount === existing) {
-    const items = await prisma.menuItem.findMany({ orderBy: { name: "asc" } })
-    for (let i = 0; i < items.length; i++) {
-      await prisma.menuItem.update({ where: { id: items[i].id }, data: { sortOrder: i } })
-    }
-    console.log(`Updated sortOrder for ${items.length} existing items.`)
+  const retailCount = await prisma.menuItem.count({ where: { menuType: "RETAIL" } })
+  if (retailCount === 0) {
+    const result = await prisma.menuItem.createMany({ data: RETAIL_ITEMS })
+    console.log(`Seeded ${result.count} retail menu items.`)
   } else {
-    console.log(`Skipped menu: ${existing} items already exist.`)
+    console.log(`Skipped retail menus: ${retailCount} already exist.`)
   }
 }
 

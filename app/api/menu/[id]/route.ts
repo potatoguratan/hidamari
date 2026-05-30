@@ -17,6 +17,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
         name: body.name,
         price: Number(body.price),
         durationMin: Number(body.durationMin),
+        menuType: body.menuType,
         isActive: body.isActive,
       },
     })

@@ -28,6 +28,7 @@ export async function POST(req: NextRequest) {
         name: body.name,
         price: Number(body.price),
         durationMin: Number(body.durationMin),
+        menuType: body.menuType ?? "TREATMENT",
         isActive: body.isActive ?? true,
       },
     })

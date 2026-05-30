@@ -1,7 +1,70 @@
-.toolbar {
+/* タブ + 追加ボタン行 */
+.tabRow {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
   margin-bottom: var(--sp-4);
+}
+
+.tabBar {
+  display: inline-flex;
+  gap: var(--sp-1);
+  background: var(--c-bg);
+  border-radius: var(--radius-lg);
+  padding: 4px;
+  box-shadow: var(--shadow-neu-in);
+}
+
+.tab {
+  padding: var(--sp-2) var(--sp-5);
+  border-radius: var(--radius);
+  border: none;
+  background: transparent;
+  color: var(--c-gray-500);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  cursor: pointer;
+  transition: all 150ms ease;
+  font-family: inherit;
+  white-space: nowrap;
+
+  &:hover { color: var(--c-gray-700); }
+}
+
+.tabActive {
+  background: var(--c-main);
+  color: #fff;
+  box-shadow: 3px 3px 8px rgba(108, 177, 201, 0.35);
+}
+
+/* 種類選択 select (編集モーダル) */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.fieldLabel {
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  color: var(--c-gray-700);
+}
+
+.select {
+  width: 100%;
+  padding: var(--sp-2) var(--sp-3);
+  border: none;
+  border-radius: var(--radius);
+  font-size: var(--fs-base);
+  color: var(--c-gray-900);
+  background: var(--c-bg);
+  box-shadow: var(--shadow-neu-in);
+  outline: 2px solid transparent;
+  transition: outline-color 150ms ease;
+  cursor: pointer;
+  font-family: inherit;
+
+  &:focus { outline: 2px solid var(--c-main); outline-offset: 0; }
 }
 
 /* DnD テーブル構造（Table.module.scss と同仕様） */

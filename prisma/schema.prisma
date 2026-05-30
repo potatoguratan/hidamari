@@ -44,11 +44,17 @@ model Customer {
 
 // ========== メニュー ==========
 
+enum MenuItemType {
+  TREATMENT
+  RETAIL
+}
+
 model MenuItem {
   id                   String                @id @default(cuid())
   name                 String
   price                Int
   durationMin          Int
+  menuType             MenuItemType          @default(TREATMENT)
   isActive             Boolean               @default(true)
   sortOrder            Int                   @default(0)
   createdAt            DateTime              @default(now())
