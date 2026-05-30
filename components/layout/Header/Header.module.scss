@@ -16,7 +16,7 @@
   padding: var(--sp-2); border-radius: var(--radius);
   width: 38px; height: 38px;
 
-  @include mobile-and-tablet { display: flex; }
+  @include mobile { display: flex; }
 }
 
 /* 3本線 */

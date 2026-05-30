@@ -1,65 +1,247 @@
-/* サイドバー全体は var(--c-main) のフラット背景 */
 .sidebar {
   width: var(--sidebar-width);
   height: 100dvh;
   background: var(--c-purple);
-  display: flex; flex-direction: column; flex-shrink: 0;
-  position: sticky; top: 0;
-  @include mobile-and-tablet {
-    position: fixed; top: 0; left: 0; z-index: 300;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  overflow: visible;
+  position: sticky;
+  top: 0;
+
+  @include tablet-and-up {
+    width: 76px;
+    align-items: center;
+  }
+
+  @include mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 300;
+    width: var(--sidebar-width);
+    align-items: stretch;
     transform: translateX(-100%);
     transition: transform var(--t-normal);
-    &.open { transform: translateX(0); }
+
+    &.open {
+      transform: translateX(0);
+    }
   }
 }
 
 .overlay {
   display: none;
-  @include mobile-and-tablet {
-    display: block; position: fixed; inset: 0;
-    background: rgba(0, 0, 0, 0.45); z-index: 299;
-  }
 }
 
 .logo {
   padding: var(--sp-6) var(--sp-4);
   border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+
+  @include tablet-and-up {
+    width: 100%;
+    padding: var(--sp-5) 0;
+    text-align: center;
+  }
 }
 
-.logoText {
-  font-size: var(--fs-xl);
-  font-weight: var(--fw-bold);
-  color: var(--c-white);
-  letter-spacing: 0.08em;
+.logoImage {
+  display: block;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  object-fit: cover;
+
+  @include tablet-and-up {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto;
+  }
 }
 
 .nav {
   flex: 1;
   padding: var(--sp-4) var(--sp-3);
-  display: flex; flex-direction: column; gap: var(--sp-2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
   overflow-y: auto;
+  overflow-x: visible;
+  position: relative;
+
+  @include tablet-and-up {
+    width: 100%;
+    align-items: center;
+    padding: var(--sp-4) 0;
+  }
 }
 
-/* ────────────────────────────────────────────
-   ナビ項目: var(--c-main) (#5dc1cf) 上でのニューモフィズム
-   dark shadow  : rgba(50, 148, 162, 0.65)
-   light shadow : rgba(120, 218, 232, 0.7)
-──────────────────────────────────────────── */
 .navItem {
-  display: flex; align-items: center; gap: var(--sp-3);
+  position: relative;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
   padding: var(--sp-3) var(--sp-4);
   border-radius: var(--radius-pill);
   color: var(--c-white);
   text-decoration: none;
-  font-size: var(--fs-sm); font-weight: var(--fw-medium);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
   transition: background-color var(--t-fast), color var(--t-fast);
 
+  @include tablet-and-up {
+    width: 60px;
+    height: 54px;
+    justify-content: center;
+    padding: 0;
+    border-radius: 27px 0 0 27px;
+  }
+
   &.active {
-    font-weight: var(--fw-semibold);
-    /* 押し込み */
-    background: var(--c-white);
     color: var(--c-purple);
+    font-weight: var(--fw-semibold);
+
+    @include tablet-and-up {
+      background: transparent;
+    }
   }
 }
 
-.icon { font-size: 1.2em; flex-shrink: 0; color: currentColor; }
+.activePlate {
+  display: none;
+}
+
+.connected .activePlate {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  display: block;
+  border-radius: var(--radius-pill);
+  background: var(--c-white);
+
+  @include tablet-and-up {
+    top: 0;
+    right: auto;
+    bottom: 0;
+    left: 3px;
+    width: 54px;
+    border-radius: 50%;
+  }
+}
+
+.activeConnector {
+  display: none;
+}
+
+.connected .activeConnector {
+  @include tablet-and-up {
+    position: absolute;
+    z-index: -2;
+    top: 0;
+    right: -24px;
+    bottom: 0;
+    left: 30px;
+    display: block;
+    background: var(--c-white);
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      width: 18px;
+      height: 18px;
+      background: transparent;
+      pointer-events: none;
+    }
+
+    &::before {
+      top: -18px;
+      right: 15px;
+      border-bottom-right-radius: 18px;
+      box-shadow: 8px 8px 0 8px var(--c-white);
+      transform-origin: right bottom;
+    }
+
+    &::after {
+      bottom: -18px;
+      right: 15px;
+      border-top-right-radius: 18px;
+      box-shadow: 8px -8px 0 8px var(--c-white);
+      transform-origin: right top;
+    }
+  }
+}
+
+.movingIndicator {
+  display: none;
+
+  @include tablet-and-up {
+    --item-step: 62px;
+    position: absolute;
+    top: var(--sp-4);
+    right: -16px;
+    z-index: 0;
+    display: block;
+    width: 81px;
+    height: 54px;
+    border-radius: 27px 0 0 27px;
+    background: var(--c-white);
+    animation: moveSelection 260ms ease-in-out both;
+    pointer-events: none;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      right: 15px;
+      width: 18px;
+      height: 18px;
+      background: transparent;
+      pointer-events: none;
+    }
+
+    &::before {
+      top: -18px;
+      border-bottom-right-radius: 18px;
+      box-shadow: 8px 8px 0 8px var(--c-white);
+    }
+
+    &::after {
+      bottom: -18px;
+      border-top-right-radius: 18px;
+      box-shadow: 8px -8px 0 8px var(--c-white);
+    }
+  }
+}
+
+.icon {
+  font-size: 1.2em;
+  flex-shrink: 0;
+  color: currentColor;
+
+  @include tablet-and-up {
+    font-size: 1.28rem;
+  }
+}
+
+.label {
+  @include tablet-and-up {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+@keyframes moveSelection {
+  0% {
+    transform: translateY(calc(var(--from-index) * var(--item-step)));
+  }
+  100% {
+    transform: translateY(calc(var(--to-index) * var(--item-step)));
+  }
+}
