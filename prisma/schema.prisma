@@ -95,7 +95,6 @@ model Reservation {
   customer   Customer              @relation(fields: [customerId], references: [id], onDelete: Cascade)
   startTime  DateTime
   endTime    DateTime
-  status     ReservationStatus     @default(CONFIRMED)
   notes      String?
   createdAt  DateTime              @default(now())
   updatedAt  DateTime              @updatedAt
@@ -108,12 +107,6 @@ model ReservationMenuItem {
   reservation   Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
   menuItemId    String
   menuItem      MenuItem    @relation(fields: [menuItemId], references: [id])
-}
-
-enum ReservationStatus {
-  CONFIRMED
-  CANCELLED
-  COMPLETED
 }
 
 // ========== 在庫 ==========

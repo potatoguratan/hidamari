@@ -185,25 +185,128 @@
 
 .reservation {
   position: absolute;
-  right: 7px;
-  left: 7px;
   display: flex;
   min-height: 34px;
   overflow: hidden;
   padding: 7px;
   border-left: 3px solid var(--c-main-dark);
-  border-radius: var(--radius-sm);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
   background: rgba(93, 193, 207, 0.2);
   color: var(--c-gray-800);
   flex-direction: column;
   font-size: var(--fs-xs);
+  cursor: pointer;
 
   span,
   small { font-size: 10px; }
   small { color: var(--c-gray-500); }
 }
 
+.reservation:focus-visible {
+  outline: 2px solid var(--c-purple);
+  outline-offset: 2px;
+}
+
+.reservationBar {
+  position: absolute;
+  min-height: 8px;
+  border-radius: 3px;
+  background: var(--c-main);
+}
+
 .loading { padding: var(--sp-3); color: var(--c-gray-400); font-size: var(--fs-sm); }
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.editSummary {
+  display: flex;
+  padding: var(--sp-3);
+  border-radius: var(--radius);
+  background: var(--c-purple-soft);
+  color: var(--c-gray-800);
+  flex-direction: column;
+  gap: var(--sp-1);
+
+  span {
+    color: var(--c-gray-500);
+    font-size: var(--fs-sm);
+  }
+}
+
+.timeFields {
+  display: grid;
+  gap: var(--sp-3);
+  grid-template-columns: 1fr 1fr;
+}
+
+.editField {
+  display: flex;
+  color: var(--c-gray-700);
+  flex-direction: column;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  gap: var(--sp-1);
+
+  select,
+  textarea {
+    width: 100%;
+    padding: var(--sp-2) var(--sp-3);
+    border: 1px solid var(--border-c);
+    border-radius: var(--radius);
+    background: var(--c-white);
+    color: var(--c-gray-900);
+    font: inherit;
+  }
+
+  textarea {
+    min-height: 84px;
+    resize: vertical;
+  }
+}
+
+.editError {
+  color: var(--c-danger);
+  font-size: var(--fs-sm);
+}
+
+.deleteContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+
+.deleteWarning {
+  padding: var(--sp-3) var(--sp-4);
+  border-left: 3px solid var(--c-danger);
+  background: rgba(239, 68, 68, 0.05);
+  color: var(--c-gray-600);
+  font-size: var(--fs-sm);
+}
+
+.editActionsSpread {
+  display: flex;
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--border-c);
+  gap: var(--sp-3);
+  justify-content: space-between;
+
+  .editActions {
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+
+.editActions {
+  display: flex;
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--border-c);
+  gap: var(--sp-3);
+  justify-content: flex-end;
+}
 
 @include mobile {
   .layout { grid-template-columns: 1fr; }

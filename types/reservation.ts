@@ -1,8 +1,6 @@
 import type { Customer } from "./customer"
 import type { MenuItem } from "./menu"
 
-export type ReservationStatus = "CONFIRMED" | "CANCELLED" | "COMPLETED"
-
 export type ReservationMenuItem = {
   id: string
   reservationId: string
@@ -16,7 +14,6 @@ export type Reservation = {
   customer: Customer
   startTime: string
   endTime: string
-  status: ReservationStatus
   notes: string | null
   createdAt: string
   updatedAt: string

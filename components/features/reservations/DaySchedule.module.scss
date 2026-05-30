@@ -76,18 +76,6 @@
   box-shadow: none;
   cursor: default;
   min-height: 28px;
-
-  &.cancelled {
-    background: var(--c-gray-400);
-    border-left-color: rgba(255, 255, 255, 0.3);
-    box-shadow: none;
-  }
-
-  &.completed {
-    background: #5aad8a;
-    border-left-color: rgba(255, 255, 255, 0.35);
-    box-shadow: none;
-  }
 }
 
 .blockTime {

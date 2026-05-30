@@ -14,7 +14,6 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   const reservation = await prisma.reservation.update({
     where: { id },
     data: {
-      status: body.status,
       notes: body.notes ?? null,
       startTime: body.startTime ? new Date(body.startTime) : undefined,
       endTime: body.endTime ? new Date(body.endTime) : undefined,

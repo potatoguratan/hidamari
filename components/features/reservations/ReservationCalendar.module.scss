@@ -149,9 +149,6 @@
   border-radius: 50%;
   background: var(--c-main);
   flex-shrink: 0;
-
-  &.cancelled { background: var(--c-danger); }
-  &.completed { background: var(--c-gray-400); }
 }
 
 .overflow {

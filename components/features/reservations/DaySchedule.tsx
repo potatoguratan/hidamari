@@ -5,7 +5,7 @@ import Link from "next/link"
 import { IoIosArrowBack } from "react-icons/io"
 import { FaRegCalendarAlt } from "react-icons/fa"
 import PageHeader from "@/components/ui/PageHeader"
-import type { Reservation, ReservationStatus } from "@/types/reservation"
+import type { Reservation } from "@/types/reservation"
 import styles from "./DaySchedule.module.scss"
 
 // ── ガントチャート定数 ────────────────────────────────────────────────────
@@ -38,12 +38,6 @@ function getBlockStyle(startIso: string, endIso: string) {
     top:    `${Math.max(startMin * px, 0)}px`,
     height: `${durationMin * px}px`,
   }
-}
-
-function blockStatusClass(status: ReservationStatus) {
-  if (status === "CANCELLED") return styles.cancelled
-  if (status === "COMPLETED") return styles.completed
-  return ""
 }
 
 // ── メインコンポーネント ──────────────────────────────────────────────────
@@ -108,7 +102,7 @@ export function DaySchedule({ date }: Props) {
               {reservations.map(r => (
                 <div
                   key={r.id}
-                  className={[styles.block, blockStatusClass(r.status)].filter(Boolean).join(" ")}
+                  className={styles.block}
                   style={getBlockStyle(r.startTime, r.endTime)}
                 >
                   <span className={styles.blockTime}>

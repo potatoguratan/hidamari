@@ -50,6 +50,7 @@ export function AddReservationModal({
 
   // 既存顧客
   const [customerId, setCustomerId] = useState("")
+  const [customerSearch, setCustomerSearch] = useState("")
   // 新規顧客
   const [newName,  setNewName]  = useState("")
   const [newPhone, setNewPhone] = useState("")
@@ -79,6 +80,24 @@ export function AddReservationModal({
     }).catch(console.error)
       .finally(() => setLoadingData(false))
   }, [])
+
+  const filteredCustomers = useMemo(() => {
+    const query = customerSearch.trim().toLocaleLowerCase()
+    if (!query) return customers
+
+    return customers.filter(customer =>
+      [customer.name, customer.nameKana, customer.phone, customer.email]
+        .some(value => value?.toLocaleLowerCase().includes(query))
+    )
+  }, [customerSearch, customers])
+
+  const visibleCustomers = useMemo(() => {
+    const selectedCustomer = customers.find(customer => customer.id === customerId)
+    if (!selectedCustomer || filteredCustomers.some(customer => customer.id === customerId)) {
+      return filteredCustomers
+    }
+    return [selectedCustomer, ...filteredCustomers]
+  }, [customerId, customers, filteredCustomers])
 
   function toggleMenu(id: string) {
     setSelectedMenuIds(prev =>
@@ -142,23 +161,36 @@ export function AddReservationModal({
 
         {/* 顧客情報 */}
         {mode === "existing" ? (
-          <label className={styles.fieldLabel}>
-            <span>顧客 <span className={styles.required}>*</span></span>
-            <select
-              className={styles.select}
-              value={customerId}
-              onChange={e => setCustomerId(e.target.value)}
-              required
+          <div className={styles.fieldGroup}>
+            <Input
+              label="顧客検索"
+              type="search"
+              value={customerSearch}
+              placeholder="氏名・ふりがな・電話番号・メールアドレス"
+              onChange={e => setCustomerSearch(e.target.value)}
               disabled={loadingData}
-            >
-              <option value="">{loadingData ? "読み込み中..." : "選択してください"}</option>
-              {customers.map(c => (
-                <option key={c.id} value={c.id}>
-                  {c.name}（{c.nameKana}）
-                </option>
-              ))}
-            </select>
-          </label>
+            />
+            <label className={styles.fieldLabel}>
+              <span>顧客 <span className={styles.required}>*</span></span>
+              <select
+                className={styles.select}
+                value={customerId}
+                onChange={e => setCustomerId(e.target.value)}
+                required
+                disabled={loadingData}
+              >
+                <option value="">{loadingData ? "読み込み中..." : "選択してください"}</option>
+                {visibleCustomers.map(c => (
+                  <option key={c.id} value={c.id}>
+                    {c.name}（{c.nameKana}）
+                  </option>
+                ))}
+                {!loadingData && visibleCustomers.length === 0 && (
+                  <option value="" disabled>該当する顧客が見つかりません</option>
+                )}
+              </select>
+            </label>
+          </div>
         ) : (
           <div className={styles.fieldGroup}>
             <Input label="名前" value={newName} required placeholder="例: 田中 花子"
@@ -330,13 +362,7 @@ export function ReservationCalendar() {
                 <span className={styles.dayNum}>{day.getDate()}</span>
                 {dayItems.length > 0 && (
                   <div className={styles.dots}>
-                    {visible.map(r => (
-                      <span key={r.id} className={[
-                        styles.dot,
-                        r.status === "CANCELLED" ? styles.cancelled : "",
-                        r.status === "COMPLETED" ? styles.completed : "",
-                      ].filter(Boolean).join(" ")} />
-                    ))}
+                      {visible.map(r => <span key={r.id} className={styles.dot} />)}
                     {overflow > 0 && <span className={styles.overflow}>+{overflow}</span>}
                   </div>
                 )}

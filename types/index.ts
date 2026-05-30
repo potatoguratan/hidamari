@@ -9,7 +9,6 @@ export type {
   Reservation,
   ReservationMenuItem,
   ReservationFormData,
-  ReservationStatus,
 } from "./reservation"
 export type {
   InventoryCategory,
