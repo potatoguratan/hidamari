@@ -9,7 +9,7 @@
 .tabBar {
   display: inline-flex;
   gap: var(--sp-1);
-  background: var(--c-bg);
+  background: var(--c-purple-soft);
   border-radius: var(--radius-lg);
   padding: 4px;
   box-shadow: var(--shadow-neu-in);
@@ -57,8 +57,9 @@
   border-radius: var(--radius);
   font-size: var(--fs-base);
   color: var(--c-gray-900);
-  background: var(--c-bg);
-  box-shadow: var(--shadow-neu-in);
+  background: var(--c-white);
+  box-shadow: none;
+  border: 1px solid var(--border-c);
   outline: 2px solid transparent;
   transition: outline-color 150ms ease;
   cursor: pointer;
@@ -71,8 +72,9 @@
 .dndWrapper {
   overflow-x: auto;
   border-radius: var(--radius-lg);
-  background: var(--c-bg);
-  box-shadow: 6px 6px 14px rgba(163, 177, 198, 0.6);
+  background: var(--c-white);
+  box-shadow: var(--shadow-neu);
+  border: 1px solid var(--border-c);
 }
 
 .dndTable {
@@ -96,7 +98,7 @@
   }
 
   tbody tr {
-    background: linear-gradient(to right, #ffffff 0%, var(--c-bg) 70%);
+    background: var(--c-white);
   }
 
   tbody tr:last-child td { border-bottom: none; }
@@ -221,7 +223,7 @@
 }
 
 .dl {
-  background: var(--c-bg);
+  background: var(--c-white);
   border-radius: var(--radius);
   padding: var(--sp-4);
   box-shadow: var(--shadow-neu-in);

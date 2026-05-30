@@ -12,7 +12,7 @@
 
 /* 顧客情報カード: ニューモフィズム */
 .infoCard {
-  background: var(--c-bg);
+  background: var(--c-white);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-neu);
   padding: var(--sp-6);
@@ -69,7 +69,7 @@
 }
 
 .placeholder {
-  background: var(--c-bg);
+  background: var(--c-white);
   border-radius: var(--radius);
   box-shadow: var(--shadow-neu-in);
   padding: var(--sp-8) var(--sp-4);
@@ -88,14 +88,12 @@
 .textarea {
   width: 100%;
   padding: var(--sp-2) var(--sp-3);
-  border: none;
+  border: 1px solid var(--border-c);
   border-radius: var(--radius);
   font-size: var(--fs-base);
   color: var(--c-gray-900);
-  background: var(--c-bg);
-  box-shadow:
-    inset 3px 3px 7px rgba(163, 177, 198, 0.42),
-    inset -3px -3px 7px rgba(255, 255, 255, 0.88);
+  background: var(--c-white);
+  box-shadow: none;
   resize: vertical;
   min-height: 72px;
   font-family: inherit;

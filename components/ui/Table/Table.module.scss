@@ -2,10 +2,10 @@
 .wrapper {
   overflow-x: auto;
   border-radius: var(--radius-lg);
-  background: var(--c-bg);
+  background: var(--c-white);
   /* 左上ハイライトを除いた右下シャドウのみ */
-  box-shadow: 6px 6px 14px rgba(163, 177, 198, 0.6);
-  border: none;
+  box-shadow: var(--shadow-neu);
+  border: 1px solid var(--border-c);
 }
 
 .table {
@@ -24,18 +24,14 @@
   td {
     padding: var(--sp-3) var(--sp-4);
     color: var(--c-gray-800);
-    border-bottom: 1px solid rgba(163, 177, 198, 0.25);
+    border-bottom: 1px solid rgba(52, 41, 127, 0.08);
     vertical-align: middle;
     background: transparent;
   }
 
   /* 1行まとめてグラデーション */
   tbody tr {
-    background: linear-gradient(
-      to right,
-      #ffffff 0%,
-      var(--c-bg) 70%
-    );
+    background: var(--c-white);
   }
 
   tbody tr:last-child td { border-bottom: none; }
@@ -50,5 +46,5 @@
 .empty {
   text-align: center; color: var(--c-gray-400);
   padding: var(--sp-8) var(--sp-4) !important;
-  background: var(--c-bg) !important;
+  background: var(--c-white) !important;
 }

@@ -29,14 +29,14 @@
   width: 32px;
   height: 32px;
   border-radius: var(--radius);
-  background: var(--c-bg);
+  background: var(--c-white);
   color: var(--c-main);
   font-size: 1.1rem;
   box-shadow: var(--shadow-neu);
   transition: box-shadow var(--t-fast);
   text-decoration: none;
 
-  &:active { box-shadow: var(--shadow-neu-in); }
+  &:active { background: var(--c-purple-soft); }
 }
 
 /* 3点リーダーボタン */
@@ -61,14 +61,12 @@
 .textarea {
   width: 100%;
   padding: var(--sp-2) var(--sp-3);
-  border: none;
+  border: 1px solid var(--border-c);
   border-radius: var(--radius);
   font-size: var(--fs-base);
   color: var(--c-gray-900);
-  background: var(--c-bg);
-  box-shadow:
-    inset 3px 3px 7px rgba(163, 177, 198, 0.42),
-    inset -3px -3px 7px rgba(255, 255, 255, 0.88);
+  background: var(--c-white);
+  box-shadow: none;
   resize: vertical;
   min-height: 72px;
   transition: outline-color 150ms ease;
@@ -125,7 +123,7 @@
 }
 
 .dl {
-  background: var(--c-bg);
+  background: var(--c-white);
   border-radius: var(--radius);
   padding: var(--sp-4);
   box-shadow: var(--shadow-neu-in);

@@ -1,8 +1,8 @@
 /* ヘッダーはフラット白 */
 .header {
   height: var(--header-height);
-  // background: var(--c-white);
-  // border-bottom: 2px solid var(--c-main);
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(14px);
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 var(--sp-6);
   position: sticky; top: 0; z-index: 200;
@@ -55,16 +55,16 @@
 
 /* ログアウトボタン: ニューモフィズム */
 .logoutBtn {
-  background: var(--c-bg);
-  border: none;
+  background: var(--c-white);
+  border: 1px solid var(--border-c);
   border-radius: var(--radius-pill);
   padding: var(--sp-1) var(--sp-4);
   font-size: var(--fs-sm);
   color: var(--c-gray-600);
   font-weight: var(--fw-medium);
   cursor: pointer;
-  box-shadow: var(--shadow-neu);
-  transition: box-shadow var(--t-fast);
+  box-shadow: var(--shadow-neu-sm);
+  transition: background-color var(--t-fast), color var(--t-fast);
 
-  &:active { box-shadow: var(--shadow-neu-in); }
+  &:active { background: var(--c-purple-soft); }
 }

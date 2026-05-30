@@ -19,23 +19,19 @@ const scssMixins = `
   // ── Neumorphism (背景 #f0f0f0 前提) ──
   @mixin neu-raised {
     box-shadow:
-      6px 6px 14px rgba(163, 177, 198, 0.6),
-      -6px -6px 14px rgba(255, 255, 255, 0.9);
+      0 14px 32px rgba(52, 41, 127, 0.08);
   }
   @mixin neu-raised-sm {
     box-shadow:
-      3px 3px 8px rgba(163, 177, 198, 0.55),
-      -3px -3px 8px rgba(255, 255, 255, 0.85);
+      0 8px 18px rgba(52, 41, 127, 0.07);
   }
   @mixin neu-pressed {
     box-shadow:
-      inset 4px 4px 10px rgba(163, 177, 198, 0.6),
-      inset -4px -4px 10px rgba(255, 255, 255, 0.9);
+      0 0 0 1px rgba(52, 41, 127, 0.1);
   }
   @mixin neu-pressed-sm {
     box-shadow:
-      inset 2px 2px 6px rgba(163, 177, 198, 0.55),
-      inset -2px -2px 6px rgba(255, 255, 255, 0.85);
+      0 0 0 1px rgba(52, 41, 127, 0.08);
   }
 
   // ── Glassmorphism ──

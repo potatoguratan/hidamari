@@ -8,21 +8,19 @@
 .input {
   width: 100%;
   padding: var(--sp-2) var(--sp-3);
-  border: none;
+  border: 1px solid var(--border-c);
   border-radius: var(--radius);
   font-size: var(--fs-base);
   color: var(--c-gray-900);
-  background: var(--c-bg);
-  box-shadow: var(--shadow-neu-in);
-  transition: box-shadow 150ms ease, outline-color 150ms ease;
+  background: var(--c-white);
+  box-shadow: none;
+  transition: border-color 150ms ease, outline-color 150ms ease;
   outline: 2px solid transparent;
 
   &:focus {
     outline: 2px solid var(--c-main);
     outline-offset: 0;
-    box-shadow:
-      inset 4px 4px 10px rgba(163, 177, 198, 0.6),
-      inset -4px -4px 10px rgba(255, 255, 255, 0.9);
+    border-color: transparent;
   }
 
   &.hasError {

@@ -39,20 +39,21 @@
 .navBtn {
   width: 36px; height: 36px;
   display: flex; align-items: center; justify-content: center;
-  background: var(--c-bg);
-  border: none; cursor: pointer;
+  background: var(--c-white);
+  border: 1px solid var(--border-c); cursor: pointer;
   border-radius: var(--radius);
   font-size: 1.1rem;
   color: var(--c-main);
   box-shadow: var(--shadow-neu-sm);
-  transition: box-shadow var(--t-fast);
+  transition: background-color var(--t-fast), color var(--t-fast);
 
-  &:active { box-shadow: var(--shadow-neu-in); }
+  &:active { background: var(--c-purple-soft); }
 }
 
 /* ── カレンダー ────────────────────────────────────────── */
 .calendar {
-  background: var(--c-bg);
+  background: var(--c-white);
+  border: 1px solid var(--border-c);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-neu);
   overflow: hidden;
@@ -91,7 +92,7 @@
   display: flex;
   flex-direction: column;
   gap: 3px;
-  transition: box-shadow var(--t-fast);
+  transition: background-color var(--t-fast);
 
   /* 最終列はボーダーなし */
   &:nth-child(7n) { border-right: none; }
@@ -104,7 +105,7 @@
 
   /* 選択中: 背景色は変えずに inset シャドウのみ */
   &.selected {
-    box-shadow: var(--shadow-neu-in);
+    background: var(--c-purple-soft);
   }
 
   /* 日・土の色 */
@@ -161,7 +162,8 @@
 
 /* ── 選択日 詳細パネル ─────────────────────────────────── */
 .detailPanel {
-  background: var(--c-bg);
+  background: var(--c-white);
+  border: 1px solid var(--border-c);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-neu);
   overflow: hidden;
@@ -185,7 +187,7 @@
 .detailDate {
   font-size: var(--fs-base);
   font-weight: var(--fw-semibold);
-  color: var(--c-gray-800);
+  color: var(--c-white);
 }
 
 .detailHeaderRight {
@@ -213,15 +215,10 @@
   font-size: 1rem;
   text-decoration: none;
   flex-shrink: 0;
-  box-shadow:
-    4px 4px 10px rgba(190, 140, 50, 0.35),
-    -4px -4px 10px rgba(255, 248, 210, 0.7),
-    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  box-shadow: none;
 
   &:active {
-    box-shadow:
-      inset 4px 4px 8px rgba(190, 140, 50, 0.35),
-      inset -4px -4px 8px rgba(255, 248, 210, 0.65);
+    background: var(--c-accent-dark);
   }
 }
 
@@ -286,7 +283,7 @@
 .modeToggle {
   display: flex;
   gap: 3px;
-  background: var(--c-bg);
+  background: var(--c-purple-soft);
   border-radius: var(--radius);
   padding: 3px;
   box-shadow: var(--shadow-neu-in);
@@ -307,10 +304,10 @@
 }
 
 .modeBtnActive {
-  background: var(--c-bg);
+  background: var(--c-white);
   color: var(--c-main);
   font-weight: var(--fw-semibold);
-  box-shadow: var(--shadow-neu-sm);
+  box-shadow: none;
 }
 
 /* フィールド群 */
@@ -335,14 +332,12 @@
 .select {
   width: 100%;
   padding: var(--sp-2) var(--sp-3);
-  border: none;
+  border: 1px solid var(--border-c);
   border-radius: var(--radius);
   font-size: var(--fs-base);
   color: var(--c-gray-900);
-  background: var(--c-bg);
-  box-shadow:
-    inset 3px 3px 7px rgba(163, 177, 198, 0.42),
-    inset -3px -3px 7px rgba(255, 255, 255, 0.88);
+  background: var(--c-white);
+  box-shadow: none;
   cursor: pointer;
   font-family: inherit;
   outline: 2px solid transparent;
@@ -363,7 +358,7 @@
   margin-top: var(--sp-1);
   max-height: 160px;
   overflow-y: auto;
-  background: var(--c-bg);
+  background: var(--c-purple-soft);
   border-radius: var(--radius);
   padding: var(--sp-2) var(--sp-3);
   box-shadow: var(--shadow-neu-in);
@@ -407,14 +402,12 @@
 .textarea {
   width: 100%;
   padding: var(--sp-2) var(--sp-3);
-  border: none;
+  border: 1px solid var(--border-c);
   border-radius: var(--radius);
   font-size: var(--fs-base);
   color: var(--c-gray-900);
-  background: var(--c-bg);
-  box-shadow:
-    inset 3px 3px 7px rgba(163, 177, 198, 0.42),
-    inset -3px -3px 7px rgba(255, 255, 255, 0.88);
+  background: var(--c-white);
+  box-shadow: none;
   resize: vertical;
   min-height: 60px;
   font-family: inherit;

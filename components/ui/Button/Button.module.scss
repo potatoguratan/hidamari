@@ -7,7 +7,7 @@
   border: none; border-radius: var(--radius);
   cursor: pointer;
   font-weight: var(--fw-semibold);
-  transition: box-shadow var(--t-fast), transform var(--t-fast), background-color var(--t-fast);
+  transition: background-color var(--t-fast), color var(--t-fast), transform var(--t-fast);
   white-space: nowrap;
 
   &:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -18,16 +18,7 @@
 .primary {
   background: var(--c-main);
   color: var(--c-white);
-  box-shadow:
-    4px 4px 10px rgba(46, 140, 155, 0.55),
-    -4px -4px 10px rgba(112, 214, 228, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.22);
-  transition: box-shadow var(--t-fast), transform var(--t-fast);
-
   &:active:not(:disabled) {
-    box-shadow:
-      inset 4px 4px 8px rgba(46, 140, 155, 0.55),
-      inset -4px -4px 8px rgba(112, 214, 228, 0.5);
     transform: scale(0.98);
   }
 }
@@ -35,48 +26,32 @@
 /* Secondary: var(--c-accent) ベース */
 .secondary {
   background: var(--c-accent);
-  color: var(--c-gray-800);
-  box-shadow:
-    4px 4px 10px rgba(190, 140, 50, 0.35),
-    -4px -4px 10px rgba(255, 248, 210, 0.7),
-    inset 0 1px 0 rgba(255, 255, 255, 0.35);
-  transition: box-shadow var(--t-fast), transform var(--t-fast);
+  color: var(--c-white);
 
   &:active:not(:disabled) {
-    box-shadow:
-      inset 4px 4px 8px rgba(190, 140, 50, 0.35),
-      inset -4px -4px 8px rgba(255, 248, 210, 0.65);
     transform: scale(0.98);
   }
 }
 
 /* Danger */
 .danger {
-  background: var(--c-danger);
+  background: var(--c-coral);
   color: var(--c-white);
-  box-shadow:
-    4px 4px 10px rgba(185, 28, 28, 0.38),
-    -2px -2px 8px rgba(255, 200, 200, 0.5);
-  transition: box-shadow var(--t-fast), transform var(--t-fast);
 
   &:active:not(:disabled) {
-    box-shadow:
-      inset 3px 3px 7px rgba(185, 28, 28, 0.45),
-      inset -2px -2px 6px rgba(255, 200, 200, 0.4);
     transform: scale(0.98);
   }
 }
 
 /* Ghost: 純粋ニューモフィズム (var(--c-bg) と同色・色変化なし) */
 .ghost {
-  background: var(--c-bg);
+  background: var(--c-white);
   color: var(--c-gray-700);
-  border: none;
+  border: 1px solid var(--border-c);
   /* 通常時から浮き上がり状態 */
-  box-shadow: var(--shadow-neu);
-  transition: box-shadow var(--t-fast);
+  transition: background-color var(--t-fast), color var(--t-fast);
 
-  &:active:not(:disabled) { box-shadow: var(--shadow-neu-in); }
+  &:active:not(:disabled) { background: var(--c-purple-soft); }
 }
 
 .sm { padding: var(--sp-1) var(--sp-3); font-size: var(--fs-sm); }

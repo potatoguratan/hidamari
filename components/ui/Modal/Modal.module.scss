@@ -7,7 +7,7 @@
 
   border: none;
   border-radius: var(--radius-xl);
-  background: var(--c-bg);
+  background: var(--c-white);
   box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.12),
     0 4px 16px rgba(93, 193, 207, 0.12);
@@ -61,12 +61,11 @@
 
 /* 閉じるボタン: ニューモフィズム */
 .closeBtn {
-  background: var(--c-bg);
-  border: none; cursor: pointer;
+  background: var(--c-white);
+  border: 1px solid var(--border-c); cursor: pointer;
   color: var(--c-gray-600); font-size: var(--fs-lg); line-height: 1;
   padding: var(--sp-1) var(--sp-2); border-radius: var(--radius-sm);
-  box-shadow: var(--shadow-neu);
-  transition: box-shadow var(--t-fast);
+  transition: background-color var(--t-fast);
 
-  &:active { box-shadow: var(--shadow-neu-in); }
+  &:active { background: var(--c-purple-soft); }
 }

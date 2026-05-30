@@ -2,7 +2,7 @@
 .sidebar {
   width: var(--sidebar-width);
   height: 100dvh;
-  background: var(--c-main);
+  background: var(--c-purple);
   display: flex; flex-direction: column; flex-shrink: 0;
   position: sticky; top: 0;
   @include mobile-and-tablet {
@@ -48,19 +48,18 @@
 .navItem {
   display: flex; align-items: center; gap: var(--sp-3);
   padding: var(--sp-3) var(--sp-4);
-  border-radius: var(--radius);
+  border-radius: var(--radius-pill);
   color: var(--c-white);
   text-decoration: none;
   font-size: var(--fs-sm); font-weight: var(--fw-medium);
-  transition: box-shadow var(--t-fast);
+  transition: background-color var(--t-fast), color var(--t-fast);
 
   &.active {
     font-weight: var(--fw-semibold);
     /* 押し込み */
-    box-shadow:
-      inset 3px 3px 7px rgba(46, 140, 155, 0.55),
-      inset -3px -3px 7px rgba(112, 214, 228, 0.58);
+    background: var(--c-white);
+    color: var(--c-purple);
   }
 }
 
-.icon { font-size: 1.2em; flex-shrink: 0; color: var(--c-white); }
+.icon { font-size: 1.2em; flex-shrink: 0; color: currentColor; }
