@@ -43,7 +43,7 @@ function buildDatetime(date: Date, timeStr: string): string {
 }
 
 // ── 予約追加モーダル ──────────────────────────────────────────────────────
-function AddReservationModal({
+export function AddReservationModal({
   date, onClose, onSaved,
 }: { date: Date; onClose: () => void; onSaved: () => void }) {
   const [mode, setMode] = useState<"existing" | "new">("existing")

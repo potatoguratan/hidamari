@@ -1,6 +1,6 @@
 import PageHeader from "@/components/ui/PageHeader"
 import { FaRegCalendarAlt } from "react-icons/fa"
-import { ReservationCalendar } from "@/components/features/reservations/ReservationCalendar"
+import { ReservationSchedule } from "@/components/features/reservations/ReservationSchedule"
 
 export const metadata = { title: "予約管理 | Hidamari" }
 
@@ -11,7 +11,7 @@ export default function ReservationsPage() {
         title="予約管理"
         icon={FaRegCalendarAlt}
       />
-      <ReservationCalendar />
+      <ReservationSchedule />
     </>
   )
 }
