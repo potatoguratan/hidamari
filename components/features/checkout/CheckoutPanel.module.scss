@@ -472,6 +472,7 @@
 }
 
 .customerLeft {
+  position: relative;
   width: 40%;
   background: var(--c-main);
   display: flex;
@@ -484,10 +485,23 @@
 }
 
 .corgiWalk {
-  position: relative;
-  width: min(100%, 320px);
+  position: absolute;
+  top: calc(50% + 76px);
+  left: 50%;
+  width: min(62%, 230px);
   aspect-ratio: 5 / 4;
-  margin-bottom: var(--sp-2);
+  transform: translateX(-50%);
+}
+
+.customerLogo {
+  position: absolute;
+  left: 50%;
+  bottom: calc(50% + 78px);
+  width: 132px;
+  height: 132px;
+  border-radius: var(--radius);
+  object-fit: cover;
+  transform: translateX(-50%);
 }
 
 .corgiSprite {
@@ -642,6 +656,14 @@
 
   .customerLayout { flex-direction: column; }
   .customerLeft { width: 100%; padding: var(--sp-6); }
-  .corgiWalk { width: min(64vw, 220px); }
+  .corgiWalk {
+    top: calc(50% + 58px);
+    width: min(42vw, 170px);
+  }
+  .customerLogo {
+    bottom: calc(50% + 58px);
+    width: 96px;
+    height: 96px;
+  }
   .customerRight { padding: var(--sp-4); }
 }

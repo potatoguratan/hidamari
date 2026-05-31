@@ -320,6 +320,15 @@ export function CheckoutPanel({ initialReservationId }: { initialReservationId?:
         </div>
         <div className={styles.customerLayout}>
           <div className={styles.customerLeft}>
+            <Image
+              className={styles.customerLogo}
+              src="/logo.jpg"
+              width={88}
+              height={88}
+              alt=""
+              aria-hidden="true"
+              priority
+            />
             <div className={styles.corgiWalk} aria-hidden="true">
               <Image
                 className={styles.corgiSprite}

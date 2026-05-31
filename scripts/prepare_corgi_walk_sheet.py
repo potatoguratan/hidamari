@@ -1,11 +1,11 @@
 from pathlib import Path
 from collections import deque
+import argparse
 
 from PIL import Image
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE = ROOT / "scripts" / "assets" / "corgi-walk-sheet-v2-raw.png"
 OUT_DIR = ROOT / "public" / "images" / "corgi-walk"
 FRAME_COUNT = 6
 
@@ -88,8 +88,13 @@ def keep_largest_component(image: Image.Image) -> Image.Image:
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--source", type=Path, default=ROOT / "scripts" / "assets" / "corgi-walk-sheet-v2-raw.png")
+    parser.add_argument("--prefix", default="corgi-walk-v2")
+    args = parser.parse_args()
+
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    sheet = Image.open(SOURCE).convert("RGBA")
+    sheet = Image.open(args.source).convert("RGBA")
     frames = []
     boxes = []
 
@@ -113,7 +118,7 @@ def main() -> None:
     for index, frame in enumerate(frames, start=1):
         canvas = Image.new("RGBA", canvas_size, (0, 0, 0, 0))
         canvas.alpha_composite(frame, ((canvas.width - frame.width) // 2, canvas.height - frame.height - 24))
-        canvas.save(OUT_DIR / f"corgi-walk-v2-{index}.png")
+        canvas.save(OUT_DIR / f"{args.prefix}-{index}.png")
 
 
 if __name__ == "__main__":
