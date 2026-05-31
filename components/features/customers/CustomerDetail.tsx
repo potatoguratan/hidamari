@@ -124,9 +124,14 @@ function formatBirthday(iso: string | null): string | null {
 }
 
 // ─── メインコンポーネント ────────────────────────────────────────────────
-type Props = { id: string }
+type Props = {
+  id: string
+  embedded?: boolean
+  onDeleted?: () => void
+  onUpdated?: () => void
+}
 
-export function CustomerDetail({ id }: Props) {
+export function CustomerDetail({ id, embedded = false, onDeleted, onUpdated }: Props) {
   const router = useRouter()
   const [customer, setCustomer] = useState<Customer | null>(null)
   const [loading, setLoading] = useState(true)
@@ -136,6 +141,8 @@ export function CustomerDetail({ id }: Props) {
 
   useEffect(() => {
     async function load() {
+      setLoading(true)
+      setFetchError("")
       try {
         const res = await fetch(`/api/customers/${id}`)
         if (!res.ok) { setFetchError("顧客情報の取得に失敗しました"); return }
@@ -154,22 +161,39 @@ export function CustomerDetail({ id }: Props) {
   if (!customer)  return <p className={styles.fetchError}>顧客が見つかりません</p>
 
   return (
-    <>
-      <Link href="/customers" className={styles.backLink}>
-        <IoIosArrowBack /> 顧客一覧に戻る
-      </Link>
+    <div className={embedded ? styles.embedded : undefined}>
+      {!embedded && (
+        <Link href="/customers" className={styles.backLink}>
+          <IoIosArrowBack /> 顧客一覧に戻る
+        </Link>
+      )}
 
-      <PageHeader
-        title={customer.name}
-        description={customer.nameKana}
-        icon={FaRegAddressBook}
-        actions={
-          <>
+      {embedded && (
+        <div className={styles.detailHeading}>
+          <div>
+            <h2>{customer.name}</h2>
+            <span>{customer.nameKana}</span>
+          </div>
+          <div className={styles.detailActions}>
             <Button variant="ghost" onClick={() => setEditOpen(true)}>編集</Button>
             <Button variant="danger" onClick={() => setDeleteOpen(true)}>削除</Button>
-          </>
-        }
-      />
+          </div>
+        </div>
+      )}
+
+      {!embedded && (
+        <PageHeader
+          title={customer.name}
+          description={customer.nameKana}
+          icon={FaRegAddressBook}
+          actions={
+            <>
+              <Button variant="ghost" onClick={() => setEditOpen(true)}>編集</Button>
+              <Button variant="danger" onClick={() => setDeleteOpen(true)}>削除</Button>
+            </>
+          }
+        />
+      )}
 
       {/* 顧客情報カード */}
       <div className={styles.infoCard}>
@@ -197,6 +221,7 @@ export function CustomerDetail({ id }: Props) {
           onClose={() => setEditOpen(false)}
           onSaved={() => {
             setEditOpen(false)
+            onUpdated?.()
             // 最新情報を再取得
             fetch(`/api/customers/${id}`)
               .then(r => r.json())
@@ -209,9 +234,13 @@ export function CustomerDetail({ id }: Props) {
         <DeleteModal
           customer={customer}
           onClose={() => setDeleteOpen(false)}
-          onDeleted={() => router.push("/customers")}
+          onDeleted={() => {
+            setDeleteOpen(false)
+            if (onDeleted) onDeleted()
+            else router.push("/customers")
+          }}
         />
       )}
-    </>
+    </div>
   )
 }

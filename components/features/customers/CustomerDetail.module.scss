@@ -10,6 +10,29 @@
   &:active { opacity: 0.7; }
 }
 
+.detailHeading {
+  display: flex;
+  padding-bottom: var(--sp-4);
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+
+  h2 {
+    color: var(--c-gray-900);
+    font-size: var(--fs-xl);
+  }
+
+  span {
+    color: var(--c-gray-500);
+    font-size: var(--fs-sm);
+  }
+}
+
+.detailActions {
+  display: flex;
+  gap: var(--sp-2);
+}
+
 /* 顧客情報カード: ニューモフィズム */
 .infoCard {
   background: var(--c-white);
@@ -17,6 +40,19 @@
   box-shadow: var(--shadow-neu);
   padding: var(--sp-6);
   margin-bottom: var(--sp-6);
+}
+
+.embedded {
+  .infoCard {
+    padding: 0 0 var(--sp-4);
+    border-bottom: 1px solid var(--border-c);
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    margin-bottom: var(--sp-4);
+  }
+
+  .section { margin-top: var(--sp-4); }
 }
 
 .infoGrid {
