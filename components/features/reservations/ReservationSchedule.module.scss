@@ -213,6 +213,78 @@
   min-height: 8px;
   border-radius: 3px;
   background: var(--c-main);
+
+  &:hover,
+  &:focus-visible {
+    z-index: 5;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--c-purple);
+    outline-offset: 2px;
+  }
+}
+
+.reservationTooltip {
+  position: absolute;
+  top: 50%;
+  display: flex;
+  width: 184px;
+  padding: var(--sp-2) var(--sp-3);
+  border: 1px solid var(--border-c);
+  border-radius: var(--radius-sm);
+  background: var(--c-white);
+  box-shadow: var(--shadow-neu-sm);
+  color: var(--c-gray-800);
+  flex-direction: column;
+  font-size: var(--fs-xs);
+  gap: 2px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: opacity var(--t-fast);
+
+  &::before {
+    position: absolute;
+    top: 50%;
+    width: 8px;
+    height: 8px;
+    border: 1px solid var(--border-c);
+    background: var(--c-white);
+    content: "";
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  span,
+  small {
+    color: var(--c-gray-500);
+    font-size: 10px;
+  }
+}
+
+.reservationBar:hover .reservationTooltip,
+.reservationBar:focus-visible .reservationTooltip {
+  opacity: 1;
+}
+
+.tooltipRight {
+  left: calc(100% + 8px);
+
+  &::before {
+    left: -5px;
+    border-top: 0;
+    border-right: 0;
+  }
+}
+
+.tooltipLeft {
+  right: calc(100% + 8px);
+
+  &::before {
+    right: -5px;
+    border-bottom: 0;
+    border-left: 0;
+  }
 }
 
 .loading {

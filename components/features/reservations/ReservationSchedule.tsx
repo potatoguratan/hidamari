@@ -207,7 +207,7 @@ export function ReservationSchedule() {
   const today = useMemo(() => new Date(), [])
   const [currentMonth, setCurrentMonth] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1))
   const [selectedDay, setSelectedDay] = useState(today)
-  const [viewMode, setViewMode] = useState<"day" | "week">("week")
+  const [viewMode, setViewMode] = useState<"day" | "week">("day")
   const [reservations, setReservations] = useState<Reservation[]>([])
   const [loading, setLoading] = useState(true)
   const [refreshKey, setRefreshKey] = useState(0)
@@ -351,7 +351,7 @@ export function ReservationSchedule() {
             <div className={styles.hours}>
               {hours.map((hour) => <span key={hour} style={{ height: `${HOUR_HEIGHT}px` }}>{String(hour).padStart(2, "0")}:00</span>)}
             </div>
-            {scheduleDays.map((day) => (
+            {scheduleDays.map((day, dayIndex) => (
               <div
                 key={day.toISOString()}
                 className={styles.dayColumn}
@@ -362,9 +362,9 @@ export function ReservationSchedule() {
                     key={reservation.id}
                     className={viewMode === "day" ? styles.reservation : styles.reservationBar}
                     style={blockStyle(reservation, column, columns)}
-                    aria-label={`${timeLabel(reservation.startTime)} - ${timeLabel(reservation.endTime)}`}
+                    aria-label={`${reservation.customer.name} ${timeLabel(reservation.startTime)} - ${timeLabel(reservation.endTime)}`}
                     role={viewMode === "day" ? "button" : undefined}
-                    tabIndex={viewMode === "day" ? 0 : undefined}
+                    tabIndex={0}
                     onClick={viewMode === "day" ? () => setEditingReservation(reservation) : undefined}
                     onKeyDown={viewMode === "day" ? (event) => {
                       if (event.key === "Enter" || event.key === " ") setEditingReservation(reservation)
@@ -376,6 +376,13 @@ export function ReservationSchedule() {
                         <span>{timeLabel(reservation.startTime)} - {timeLabel(reservation.endTime)}</span>
                         <small>{reservation.menuItems.map((item) => item.menuItem.name).join(" / ")}</small>
                       </>
+                    )}
+                    {viewMode === "week" && (
+                      <div className={[styles.reservationTooltip, dayIndex >= 4 ? styles.tooltipLeft : styles.tooltipRight].join(" ")}>
+                        <strong>{reservation.customer.name}</strong>
+                        <span>{timeLabel(reservation.startTime)} - {timeLabel(reservation.endTime)}</span>
+                        <small>{reservation.menuItems.map((item) => item.menuItem.name).join(" / ") || "メニュー未設定"}</small>
+                      </div>
                     )}
                   </article>
                 ))}
