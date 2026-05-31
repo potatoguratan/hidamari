@@ -11,6 +11,7 @@ export type Customer = {
   updatedAt: string
   treatments?: Treatment[]
   reservations?: Reservation[]
+  sales?: Sale[]
 }
 
 export type CustomerFormData = {
@@ -24,3 +25,4 @@ export type CustomerFormData = {
 
 import type { Treatment } from "./treatment"
 import type { Reservation } from "./reservation"
+import type { Sale } from "./sale"

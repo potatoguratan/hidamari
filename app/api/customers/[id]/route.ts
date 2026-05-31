@@ -17,6 +17,10 @@ export async function GET(_req: NextRequest, { params }: Params) {
           include: { menuItems: { include: { menuItem: true } } },
           orderBy: { date: "desc" },
         },
+        sales: {
+          include: { lines: true },
+          orderBy: { soldAt: "desc" },
+        },
       },
     })
     if (!customer) return NextResponse.json({ error: "Not found" }, { status: 404 })

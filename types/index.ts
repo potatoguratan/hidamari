@@ -22,3 +22,4 @@ export type {
   MenuSalesBreakdown,
   SalesReport,
 } from "./sales"
+export type { Sale, SaleLine } from "./sale"

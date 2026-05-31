@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server"
 import { auth } from "@/auth"
 import { prisma } from "@/lib/db/prisma"
 import { getMonthRange, getYearRange, getDayRange } from "@/lib/utils/date"
-import type { Treatment } from "@/app/generated/prisma/client"
 
 export async function GET(req: NextRequest) {
   const session = await auth()
@@ -19,25 +18,27 @@ export async function GET(req: NextRequest) {
   else if (period === "monthly") range = getMonthRange(year, month)
   else range = getDayRange(new Date(year, month - 1, day))
 
-  const treatments = await prisma.treatment.findMany({
+  const sales = await prisma.sale.findMany({
     where: {
-      date: { gte: range.start, lte: range.end },
+      soldAt: { gte: range.start, lte: range.end },
     },
-    include: { menuItems: { include: { menuItem: true } } },
-    orderBy: { date: "asc" },
+    include: { lines: true },
+    orderBy: { soldAt: "asc" },
   })
 
-  const totalAmount = treatments.reduce((s: number, t: Treatment) => s + t.totalAmount, 0)
-  const discountTotal = treatments.reduce((s: number, t: Treatment) => s + t.discount, 0)
+  const totalAmount = sales.reduce((sum, sale) => sum + sale.subtotalAmount, 0)
+  const discountTotal = sales.reduce((sum, sale) => sum + sale.discountAmount, 0)
+  const netAmount = sales.reduce((sum, sale) => sum + sale.totalAmount, 0)
 
   const byMenu: Record<string, { name: string; count: number; total: number }> = {}
-  for (const t of treatments) {
-    for (const m of t.menuItems) {
-      if (!byMenu[m.menuItemId]) {
-        byMenu[m.menuItemId] = { name: m.menuItem.name, count: 0, total: 0 }
+  for (const sale of sales) {
+    for (const line of sale.lines) {
+      const key = line.menuItemId ?? `snapshot:${line.itemName}`
+      if (!byMenu[key]) {
+        byMenu[key] = { name: line.itemName, count: 0, total: 0 }
       }
-      byMenu[m.menuItemId].count += 1
-      byMenu[m.menuItemId].total += m.price
+      byMenu[key].count += line.quantity
+      byMenu[key].total += line.finalAmount
     }
   }
 
@@ -45,9 +46,10 @@ export async function GET(req: NextRequest) {
     summary: {
       period: period,
       totalAmount,
-      treatmentCount: treatments.length,
+      saleCount: sales.length,
+      treatmentCount: sales.length,
       discountTotal,
-      netAmount: totalAmount - discountTotal,
+      netAmount,
     },
     byMenu: Object.entries(byMenu).map(([menuItemId, v]) => ({
       menuItemId,

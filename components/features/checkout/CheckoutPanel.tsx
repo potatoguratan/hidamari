@@ -172,7 +172,7 @@ export function CheckoutPanel({ initialReservationId }: { initialReservationId?:
       setCheckoutError("メニューを追加してください")
       return
     }
-    if (!customerId) {
+    if (checkoutMode === "reservation" && !customerId) {
       setCheckoutError("顧客を選択してください")
       return
     }
@@ -183,9 +183,9 @@ export function CheckoutPanel({ initialReservationId }: { initialReservationId?:
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          customerId,
+          customerId: customerId || null,
+          reservationId: checkoutMode === "reservation" ? reservationId : null,
           menuItems: cart.map(item => ({ menuItemId: item.menuItem.id, price: effectivePrice(item) })),
-          discount: originalTotal - total,
         }),
       })
       if (!response.ok) {

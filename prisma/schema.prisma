@@ -40,6 +40,7 @@ model Customer {
   updatedAt    DateTime      @updatedAt
   treatments   Treatment[]
   reservations Reservation[]
+  sales        Sale[]
 }
 
 // ========== メニュー ==========
@@ -61,6 +62,9 @@ model MenuItem {
   updatedAt            DateTime              @updatedAt
   treatmentMenuItems   TreatmentMenuItem[]
   reservationMenuItems ReservationMenuItem[]
+  inventoryItemId      String?               @unique
+  inventoryItem        InventoryItem?        @relation(fields: [inventoryItemId], references: [id], onDelete: SetNull)
+  saleLines            SaleLine[]
 }
 
 // ========== 施術履歴 ==========
@@ -99,6 +103,7 @@ model Reservation {
   createdAt  DateTime              @default(now())
   updatedAt  DateTime              @updatedAt
   menuItems  ReservationMenuItem[]
+  sales      Sale[]
 }
 
 model ReservationMenuItem {
@@ -107,6 +112,50 @@ model ReservationMenuItem {
   reservation   Reservation @relation(fields: [reservationId], references: [id], onDelete: Cascade)
   menuItemId    String
   menuItem      MenuItem    @relation(fields: [menuItemId], references: [id])
+}
+
+// ========== Sales ==========
+
+model Sale {
+  id             String       @id @default(cuid())
+  customerId     String?
+  customer       Customer?    @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  reservationId  String?
+  reservation    Reservation? @relation(fields: [reservationId], references: [id], onDelete: SetNull)
+  soldAt         DateTime     @default(now())
+  subtotalAmount Int
+  discountAmount Int          @default(0)
+  totalAmount    Int
+  notes          String?
+  createdAt      DateTime     @default(now())
+  lines          SaleLine[]
+
+  @@index([soldAt])
+  @@index([customerId, soldAt])
+  @@index([reservationId])
+}
+
+model SaleLine {
+  id              String         @id @default(cuid())
+  saleId          String
+  sale            Sale           @relation(fields: [saleId], references: [id], onDelete: Cascade)
+  menuItemId      String?
+  menuItem        MenuItem?      @relation(fields: [menuItemId], references: [id], onDelete: SetNull)
+  inventoryItemId String?
+  inventoryItem   InventoryItem? @relation(fields: [inventoryItemId], references: [id], onDelete: SetNull)
+  itemType        MenuItemType
+  itemName        String
+  unitPrice       Int
+  quantity        Int            @default(1)
+  originalAmount  Int
+  discountAmount  Int            @default(0)
+  finalAmount     Int
+  createdAt       DateTime       @default(now())
+
+  @@index([saleId])
+  @@index([menuItemId])
+  @@index([inventoryItemId])
+  @@index([itemType])
 }
 
 // ========== 在庫 ==========
@@ -130,6 +179,8 @@ model InventoryItem {
   alertThreshold Float
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
+  menuItem       MenuItem?
+  saleLines      SaleLine[]
 }
 
 enum InventoryItemType {
