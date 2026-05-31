@@ -15,6 +15,7 @@ import {
 } from "date-fns"
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io"
 import { FiPlus } from "react-icons/fi"
+import { useRouter } from "next/navigation"
 import Button from "@/components/ui/Button"
 import Input from "@/components/ui/Input"
 import Modal from "@/components/ui/Modal"
@@ -50,10 +51,12 @@ function EditReservationModal({
   reservation,
   onClose,
   onSaved,
+  onCheckout,
 }: {
   reservation: Reservation
   onClose: () => void
   onSaved: () => void
+  onCheckout: () => void
 }) {
   const [startTime, setStartTime] = useState(() => timeLabel(reservation.startTime))
   const [endTime, setEndTime] = useState(() => timeLabel(reservation.endTime))
@@ -155,6 +158,7 @@ function EditReservationModal({
         <div className={styles.editActionsSpread}>
           <Button type="button" variant="danger" onClick={() => { setMode("deleteConfirm"); setError("") }}>削除</Button>
           <div className={styles.editActions}>
+            <Button type="button" variant="secondary" onClick={onCheckout}>会計</Button>
             <Button type="button" variant="ghost" onClick={onClose}>キャンセル</Button>
             <Button type="submit" loading={saving}>更新</Button>
           </div>
@@ -204,6 +208,7 @@ function layoutReservations(reservations: Reservation[]) {
 }
 
 export function ReservationSchedule() {
+  const router = useRouter()
   const today = useMemo(() => new Date(), [])
   const [currentMonth, setCurrentMonth] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1))
   const [selectedDay, setSelectedDay] = useState(today)
@@ -404,6 +409,7 @@ export function ReservationSchedule() {
           reservation={editingReservation}
           onClose={() => setEditingReservation(null)}
           onSaved={() => setRefreshKey((key) => key + 1)}
+          onCheckout={() => router.push(`/checkout?reservationId=${editingReservation.id}`)}
         />
       )}
     </div>

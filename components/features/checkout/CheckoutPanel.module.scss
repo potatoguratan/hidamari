@@ -10,6 +10,81 @@
   justify-content: flex-end;
 }
 
+.checkoutSource {
+  display: flex;
+  padding: var(--sp-4);
+  border: 1px solid var(--border-c);
+  border-radius: var(--radius-lg);
+  background: var(--c-white);
+  box-shadow: var(--shadow-neu);
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.modeToggle {
+  display: flex;
+  width: fit-content;
+  padding: 3px;
+  border-radius: var(--radius);
+  background: var(--c-purple-soft);
+
+  button {
+    min-width: 104px;
+    padding: var(--sp-2) var(--sp-3);
+    border: 0;
+    border-radius: calc(var(--radius) - 3px);
+    background: transparent;
+    color: var(--c-gray-500);
+    cursor: pointer;
+    font-size: var(--fs-sm);
+  }
+}
+
+.modeToggle .modeActive {
+  background: var(--c-white);
+  color: var(--c-purple);
+  box-shadow: var(--shadow-neu-sm);
+}
+
+.sourceField {
+  display: flex;
+  max-width: 620px;
+  color: var(--c-gray-700);
+  flex-direction: column;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+  gap: var(--sp-1);
+
+  select {
+    width: 100%;
+    padding: var(--sp-2) var(--sp-3);
+    border: 1px solid var(--border-c);
+    border-radius: var(--radius);
+    background: var(--c-white);
+    color: var(--c-gray-900);
+    cursor: pointer;
+  }
+}
+
+.customerSelector,
+.reservationSelector {
+  display: grid;
+  max-width: 620px;
+  gap: var(--sp-3);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.selectedCustomer {
+  color: var(--c-main-dark);
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-medium);
+}
+
+.checkoutError {
+  color: var(--c-danger);
+  font-size: var(--fs-sm);
+}
+
 /* カートグループ（施術 / 物販 セクション） */
 .cartSection {
   border-radius: var(--radius-lg);
@@ -346,10 +421,30 @@
 .customerTopBar {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+  gap: var(--sp-3);
   padding: var(--sp-3) var(--sp-5);
   border-bottom: 1px solid var(--c-gray-100);
   flex-shrink: 0;
+}
+
+.customerTopActions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.completedView {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-gray-700);
+  flex-direction: column;
+  gap: var(--sp-4);
+
+  p { font-size: var(--fs-xl); }
+  strong { color: var(--c-main-dark); font-size: 3rem; }
 }
 
 .backBtn {
@@ -389,7 +484,7 @@
 }
 
 .customerTotalLabel {
-  font-size: var(--fs-sm);
+  font-size: var(--fs-lg);
   font-weight: var(--fw-medium);
   color: rgba(255, 255, 255, 0.75);
   letter-spacing: 0.08em;
@@ -439,10 +534,10 @@
 .customerGroupHeader {
   font-size: var(--fs-xs);
   font-weight: var(--fw-semibold);
-  color: var(--c-brown);
+  color: var(--c-white);
   letter-spacing: 0.05em;
   background: var(--c-accent);
-  padding: var(--sp-2) 0;
+  padding: var(--sp-2) var(--sp-3);
   margin-top: var(--sp-4);
 
   &:first-child { margin-top: 0; }
@@ -452,7 +547,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--sp-4) 0;
+  padding: var(--sp-4) var(--sp-3) var(--sp-4) var(--sp-5);
   border-bottom: 1px solid var(--c-gray-100);
 
   &:last-child { border-bottom: none; }
@@ -488,4 +583,30 @@
   font-size: var(--fs-lg);
   color: var(--c-gray-700);
   font-weight: var(--fw-medium);
+}
+
+@include mobile {
+  .customerSelector,
+  .reservationSelector { grid-template-columns: 1fr; }
+
+  .cartItem {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .colName { flex-basis: 100%; }
+
+  .customerTopBar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .customerTopActions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .customerLayout { flex-direction: column; }
+  .customerLeft { width: 100%; padding: var(--sp-6); }
+  .customerRight { padding: var(--sp-4); }
 }
