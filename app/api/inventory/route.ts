@@ -7,13 +7,22 @@ export async function POST(req: NextRequest) {
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
   const body = await req.json()
+  const itemType = body.itemType ?? "MATERIAL"
+  let categoryId = body.categoryId
+
+  if (itemType === "RETAIL") {
+    const retailCategory = await prisma.inventoryCategory.findFirst({ where: { name: "物販" } })
+      ?? await prisma.inventoryCategory.create({ data: { name: "物販" } })
+    categoryId = retailCategory.id
+  }
 
   const item = await prisma.inventoryItem.create({
     data: {
-      categoryId: body.categoryId,
+      categoryId,
+      itemType,
       name: body.name,
       quantity: Number(body.quantity),
-      unit: body.unit,
+      unit: itemType === "RETAIL" ? "個" : body.unit,
       alertThreshold: Number(body.alertThreshold),
     },
   })

@@ -123,10 +123,16 @@ model InventoryItem {
   id             String            @id @default(cuid())
   categoryId     String
   category       InventoryCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  itemType       InventoryItemType @default(MATERIAL)
   name           String
   quantity       Float
   unit           String
   alertThreshold Float
   createdAt      DateTime          @default(now())
   updatedAt      DateTime          @updatedAt
+}
+
+enum InventoryItemType {
+  MATERIAL
+  RETAIL
 }

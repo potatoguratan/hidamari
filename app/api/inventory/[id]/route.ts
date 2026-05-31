@@ -16,7 +16,8 @@ export async function PATCH(req: NextRequest, { params }: Params) {
     data: {
       name: body.name,
       quantity: body.quantity !== undefined ? Number(body.quantity) : undefined,
-      unit: body.unit,
+      unit: body.itemType === "RETAIL" ? "個" : body.unit,
+      itemType: body.itemType,
       alertThreshold: body.alertThreshold !== undefined ? Number(body.alertThreshold) : undefined,
       categoryId: body.categoryId,
     },

@@ -6,10 +6,13 @@ export type InventoryCategory = {
   items?: InventoryItem[]
 }
 
+export type InventoryItemType = "MATERIAL" | "RETAIL"
+
 export type InventoryItem = {
   id: string
   categoryId: string
   category?: InventoryCategory
+  itemType: InventoryItemType
   name: string
   quantity: number
   unit: string
@@ -25,6 +28,7 @@ export type InventoryCategoryFormData = {
 
 export type InventoryItemFormData = {
   categoryId: string
+  itemType: InventoryItemType
   name: string
   quantity: number
   unit: string
