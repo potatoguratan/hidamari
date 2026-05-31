@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import Image from "next/image"
 import {
   addDays,
@@ -31,6 +31,22 @@ const HOUR_HEIGHT = 68
 const CORGI_WALK_FRAMES = Array.from({ length: 6 }, (_, index) => `/images/corgi-walk/corgi-walk-v2-${index + 1}.png`)
 const CORGI_EAT_FRAMES = [1, 5, 2, 3, 4, 6].map((frame) => `/images/corgi-walk/corgi-eat-${frame}.png`)
 const CORGI_SLEEP_FRAMES = Array.from({ length: 6 }, (_, index) => `/images/corgi-walk/corgi-sleep-${index + 1}.png`)
+type CorgiActivity = "walk" | "eat" | "sleep"
+
+function corgiActivityForTime(date: Date, mixedActivity: CorgiActivity) {
+  const hour = date.getHours()
+  if (hour < 8 || hour >= 22) return "sleep"
+  if (hour < 12 || (hour >= 15 && hour < 18)) return "walk"
+  if (hour === 12 || hour === 18) return "eat"
+  return mixedActivity
+}
+
+function corgiMixedPeriod(date: Date) {
+  const hour = date.getHours()
+  if (hour >= 13 && hour < 15) return "13-14"
+  if (hour >= 19 && hour < 22) return "19-21"
+  return ""
+}
 
 function addMonths(date: Date, amount: number) {
   return new Date(date.getFullYear(), date.getMonth() + amount, 1)
@@ -223,6 +239,9 @@ export function ReservationSchedule() {
   const [addOpen, setAddOpen] = useState(false)
   const [editingReservation, setEditingReservation] = useState<Reservation | null>(null)
   const [corgiFrame, setCorgiFrame] = useState(0)
+  const [corgiActivity, setCorgiActivity] = useState<CorgiActivity>("sleep")
+  const mixedPeriodRef = useRef("")
+  const mixedActivityRef = useRef<CorgiActivity>("walk")
 
   const calendarDays = useMemo(() => {
     const start = startOfWeek(startOfMonth(currentMonth), { weekStartsOn: 0 })
@@ -256,6 +275,47 @@ export function ReservationSchedule() {
     }, 150)
     return () => window.clearInterval(timer)
   }, [])
+
+  useEffect(() => {
+    function updateCorgiActivity() {
+      const now = new Date()
+      const mixedPeriod = corgiMixedPeriod(now)
+      if (mixedPeriod && mixedPeriod !== mixedPeriodRef.current) {
+        mixedActivityRef.current = Math.random() < 0.5 ? "walk" : "sleep"
+      }
+      mixedPeriodRef.current = mixedPeriod
+      setCorgiActivity(corgiActivityForTime(now, mixedActivityRef.current))
+    }
+
+    function scheduleNextMinute() {
+      const delay = 60_000 - Date.now() % 60_000 + 50
+      timer = window.setTimeout(() => {
+        updateCorgiActivity()
+        scheduleNextMinute()
+      }, delay)
+    }
+
+    function updateWhenVisible() {
+      if (document.visibilityState === "visible") updateCorgiActivity()
+    }
+
+    let timer = 0
+    updateCorgiActivity()
+    scheduleNextMinute()
+    window.addEventListener("focus", updateCorgiActivity)
+    document.addEventListener("visibilitychange", updateWhenVisible)
+    return () => {
+      window.clearTimeout(timer)
+      window.removeEventListener("focus", updateCorgiActivity)
+      document.removeEventListener("visibilitychange", updateWhenVisible)
+    }
+  }, [])
+
+  const corgiFrames = corgiActivity === "eat"
+    ? CORGI_EAT_FRAMES
+    : corgiActivity === "sleep"
+      ? CORGI_SLEEP_FRAMES
+      : CORGI_WALK_FRAMES
 
   const reservationsByDay = useMemo(() => {
     const result = new Map<string, Reservation[]>()
@@ -330,31 +390,11 @@ export function ReservationSchedule() {
             </button>
           ))}
         </div>
-        <div className={styles.calendarCorgi} aria-hidden="true">
+        <div className={`${styles.calendarCorgi} ${corgiActivity === "sleep" ? styles.calendarCorgiSleep : ""}`} aria-hidden="true">
           <Image
-            src={CORGI_WALK_FRAMES[corgiFrame]}
+            src={corgiFrames[corgiFrame]}
             width={180}
-            height={144}
-            alt=""
-            priority
-          />
-          <span />
-        </div>
-        <div className={styles.calendarCorgi} aria-hidden="true">
-          <Image
-            src={CORGI_EAT_FRAMES[corgiFrame]}
-            width={180}
-            height={160}
-            alt=""
-            priority
-          />
-          <span />
-        </div>
-        <div className={`${styles.calendarCorgi} ${styles.calendarCorgiSleep}`} aria-hidden="true">
-          <Image
-            src={CORGI_SLEEP_FRAMES[corgiFrame]}
-            width={180}
-            height={87}
+            height={corgiActivity === "sleep" ? 87 : corgiActivity === "eat" ? 160 : 144}
             alt=""
             priority
           />
