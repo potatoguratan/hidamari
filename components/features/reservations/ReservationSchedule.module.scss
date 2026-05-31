@@ -137,6 +137,7 @@
 .toggle .toggleActive { background: var(--c-white); color: var(--c-purple); box-shadow: var(--shadow-neu-sm); }
 
 .timelineScroll {
+  position: relative;
   max-height: calc(100dvh - 126px);
   overflow-x: hidden;
   overflow-y: auto;
@@ -214,7 +215,17 @@
   background: var(--c-main);
 }
 
-.loading { padding: var(--sp-3); color: var(--c-gray-400); font-size: var(--fs-sm); }
+.loading {
+  position: absolute;
+  top: var(--sp-3);
+  right: var(--sp-3);
+  z-index: 4;
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--c-gray-400);
+  font-size: var(--fs-sm);
+}
 
 .editForm {
   display: flex;
