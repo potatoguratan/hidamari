@@ -483,6 +483,40 @@
   flex-shrink: 0;
 }
 
+.corgiWalk {
+  position: relative;
+  width: min(100%, 320px);
+  aspect-ratio: 5 / 4;
+  margin-bottom: var(--sp-2);
+}
+
+.corgiSprite {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.corgiShadow {
+  position: absolute;
+  right: 14%;
+  bottom: 10%;
+  left: 14%;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(52, 41, 127, 0.18);
+  filter: blur(3px);
+  animation: corgiShadowPulse 900ms ease-in-out infinite;
+}
+
+@keyframes corgiShadowPulse {
+  0%,
+  100% { opacity: 0.72; transform: scaleX(1); }
+  50% { opacity: 0.5; transform: scaleX(0.88); }
+}
+
 .customerTotalLabel {
   font-size: var(--fs-lg);
   font-weight: var(--fw-medium);
@@ -608,5 +642,6 @@
 
   .customerLayout { flex-direction: column; }
   .customerLeft { width: 100%; padding: var(--sp-6); }
+  .corgiWalk { width: min(64vw, 220px); }
   .customerRight { padding: var(--sp-4); }
 }

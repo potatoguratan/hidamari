@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
+import Image from "next/image"
 import Button from "@/components/ui/Button"
 import Input from "@/components/ui/Input"
 import type { Customer } from "@/types/customer"
@@ -43,6 +44,7 @@ const dateKey = (value: string) => {
   const date = new Date(value)
   return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`
 }
+const CORGI_WALK_FRAMES = Array.from({ length: 6 }, (_, index) => `/images/corgi-walk/corgi-walk-v2-${index + 1}.png`)
 
 export function CheckoutPanel({ initialReservationId }: { initialReservationId?: string }) {
   const [menuItems, setMenuItems] = useState<MenuItem[]>([])
@@ -61,6 +63,7 @@ export function CheckoutPanel({ initialReservationId }: { initialReservationId?:
   const [saving, setSaving] = useState(false)
   const [checkoutError, setCheckoutError] = useState("")
   const [completed, setCompleted] = useState(false)
+  const [corgiFrame, setCorgiFrame] = useState(0)
   const nextCartId = useRef(0)
 
   useEffect(() => {
@@ -84,6 +87,14 @@ export function CheckoutPanel({ initialReservationId }: { initialReservationId?:
       })
       .catch(() => { setFetchError("メニューデータを取得できませんでした"); setLoading(false) })
   }, [initialReservationId])
+
+  useEffect(() => {
+    if (view !== "customer") return
+    const timer = window.setInterval(() => {
+      setCorgiFrame(frame => (frame + 1) % CORGI_WALK_FRAMES.length)
+    }, 150)
+    return () => window.clearInterval(timer)
+  }, [view])
 
   function createCartItem(menuItem: MenuItem): CartItem {
     return {
@@ -309,6 +320,17 @@ export function CheckoutPanel({ initialReservationId }: { initialReservationId?:
         </div>
         <div className={styles.customerLayout}>
           <div className={styles.customerLeft}>
+            <div className={styles.corgiWalk} aria-hidden="true">
+              <Image
+                className={styles.corgiSprite}
+                src={CORGI_WALK_FRAMES[corgiFrame]}
+                width={320}
+                height={256}
+                alt=""
+                priority
+              />
+              <span className={styles.corgiShadow} />
+            </div>
             <p className={styles.customerTotalLabel}>合計</p>
             {hasDiscounts && (
               <p className={styles.customerOriginalTotal}>{fmt(originalTotal)}</p>

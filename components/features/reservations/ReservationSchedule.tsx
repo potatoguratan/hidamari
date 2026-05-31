@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useMemo, useState } from "react"
+import Image from "next/image"
 import {
   addDays,
   eachDayOfInterval,
@@ -27,6 +28,7 @@ const WEEKDAYS = ["日", "月", "火", "水", "木", "金", "土"]
 const START_HOUR = 8
 const END_HOUR = 20
 const HOUR_HEIGHT = 68
+const CORGI_WALK_FRAMES = Array.from({ length: 6 }, (_, index) => `/images/corgi-walk/corgi-walk-v2-${index + 1}.png`)
 
 function addMonths(date: Date, amount: number) {
   return new Date(date.getFullYear(), date.getMonth() + amount, 1)
@@ -218,6 +220,7 @@ export function ReservationSchedule() {
   const [refreshKey, setRefreshKey] = useState(0)
   const [addOpen, setAddOpen] = useState(false)
   const [editingReservation, setEditingReservation] = useState<Reservation | null>(null)
+  const [corgiFrame, setCorgiFrame] = useState(0)
 
   const calendarDays = useMemo(() => {
     const start = startOfWeek(startOfMonth(currentMonth), { weekStartsOn: 0 })
@@ -244,6 +247,13 @@ export function ReservationSchedule() {
 
     return () => { cancelled = true }
   }, [calendarDays, refreshKey])
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setCorgiFrame((frame) => (frame + 1) % CORGI_WALK_FRAMES.length)
+    }, 150)
+    return () => window.clearInterval(timer)
+  }, [])
 
   const reservationsByDay = useMemo(() => {
     const result = new Map<string, Reservation[]>()
@@ -317,6 +327,16 @@ export function ReservationSchedule() {
               {day.getDate()}
             </button>
           ))}
+        </div>
+        <div className={styles.calendarCorgi} aria-hidden="true">
+          <Image
+            src={CORGI_WALK_FRAMES[corgiFrame]}
+            width={180}
+            height={144}
+            alt=""
+            priority
+          />
+          <span />
         </div>
       </aside>
 
