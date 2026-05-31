@@ -30,6 +30,7 @@ const END_HOUR = 20
 const HOUR_HEIGHT = 68
 const CORGI_WALK_FRAMES = Array.from({ length: 6 }, (_, index) => `/images/corgi-walk/corgi-walk-v2-${index + 1}.png`)
 const CORGI_EAT_FRAMES = [1, 5, 2, 3, 4, 6].map((frame) => `/images/corgi-walk/corgi-eat-${frame}.png`)
+const CORGI_SLEEP_FRAMES = Array.from({ length: 6 }, (_, index) => `/images/corgi-walk/corgi-sleep-${index + 1}.png`)
 
 function addMonths(date: Date, amount: number) {
   return new Date(date.getFullYear(), date.getMonth() + amount, 1)
@@ -344,6 +345,16 @@ export function ReservationSchedule() {
             src={CORGI_EAT_FRAMES[corgiFrame]}
             width={180}
             height={160}
+            alt=""
+            priority
+          />
+          <span />
+        </div>
+        <div className={`${styles.calendarCorgi} ${styles.calendarCorgiSleep}`} aria-hidden="true">
+          <Image
+            src={CORGI_SLEEP_FRAMES[corgiFrame]}
+            width={180}
+            height={87}
             alt=""
             priority
           />
